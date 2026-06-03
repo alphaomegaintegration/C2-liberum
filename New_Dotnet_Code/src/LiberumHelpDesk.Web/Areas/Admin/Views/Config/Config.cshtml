@@ -1,0 +1,96 @@
+@model ConfigVm
+@removeTagHelper Microsoft.AspNetCore.Mvc.TagHelpers.OptionTagHelper, Microsoft.AspNetCore.Mvc.TagHelpers
+@* Port of admin/config.asp (options rendered manually; option tag helper removed) *@
+<div align="center">
+  <form method="post" action="/Admin/Config">
+    <input type="hidden" name="save" value="1" />
+    <table class="Normal">
+      <tr><td><div align="right"><a href="/Admin">@Html.Lang("AdministrativeMenu")</a> | <b><a href="/Admin/ConfigHelp" target="#">@Html.Lang("Help")</a></b></div></td></tr>
+      <tr class="Head1"><td>@Html.Lang("Configuration")</td></tr>
+      @if (Model.Saved)
+      {
+        <tr class="Head2"><td><div align="center">@Html.Lang("ConfigurationSaved")</div></td></tr>
+      }
+      <tr>
+        <td>
+          <table class="Normal">
+            <tr class="Body1"><td width="120"><b>@Html.Lang("SiteName"):</b></td><td><input type="text" size="30" name="sitename" value="@Model.SiteName" /></td></tr>
+            <tr class="Body2"><td><b>@Html.Lang("BaseURL"):</b></td><td><input type="text" size="30" name="baseurl" value="@Model.BaseURL" /> <font size="-2"><i>(http://intranet/helpdesk)</i></font></td></tr>
+            <tr class="Body1"><td><b>@Html.Lang("AdministratorsName"):</b></td><td><input type="text" size="30" name="hdname" value="@Model.HDName" /></td></tr>
+            <tr class="Body2"><td><b>@Html.Lang("AdministratorsEmail"):</b></td><td><input type="text" size="30" name="hdreply" value="@Model.HDReply" /></td></tr>
+            <tr class="Body1"><td><b>@Html.Lang("BaseEmail"):</b></td><td><input type="text" size="30" name="baseemail" value="@Model.BaseEmail" /> <font size="-2"><i>(@@company.com)</i></font></td></tr>
+            <tr class="Body2">
+              <td><b>@Html.Lang("EmailType"):</b></td>
+              <td><select name="emailtype">@foreach (var o in Model.EmailTypes) { <option value="@o.Id"@(o.Id == Model.EmailType ? " selected" : "")>@o.Name</option> }</select></td>
+            </tr>
+            <tr class="Body1"><td><b>@Html.Lang("SMTPServer"):</b></td><td><input type="text" size="30" name="smtpserver" value="@Model.SMTPServer" /> <font size="-2"><i>(@Html.Lang("JMailorASPEmail"))</i></font></td></tr>
+            <tr class="Body2">
+              <td><b>@Html.Lang("PagerPriorityLevel"):</b></td>
+              <td>
+                <select name="enablepager">
+                  <option value="0"@(Model.EnablePager == 0 ? " selected" : "")>@Html.Lang("Disabled")</option>
+                  @foreach (var o in Model.Priorities) { <option value="@o.Id"@(o.Id == Model.EnablePager ? " selected" : "")>@o.Name</option> }
+                </select>
+              </td>
+            </tr>
+            <tr class="Body1">
+              <td><b>@Html.Lang("EmailUseronUpdate"):</b></td>
+              <td><select name="notifyuser"><option value="0"@(Model.NotifyUser == 0 ? " selected" : "")>@Html.Lang("NO")</option><option value="1"@(Model.NotifyUser == 1 ? " selected" : "")>@Html.Lang("YES")</option></select></td>
+            </tr>
+            <tr class="Body2">
+              <td><b>@Html.Lang("EnableUserKB"):</b></td>
+              <td>
+                <select name="enablekb">
+                  <option value="0"@(Model.EnableKB == 0 ? " selected" : "")>@Html.Lang("Disable")</option>
+                  <option value="1"@(Model.EnableKB == 1 ? " selected" : "")>@Html.Lang("RepsOnly")</option>
+                  <option value="2"@(Model.EnableKB == 2 ? " selected" : "")>@Html.Lang("UsersReps")</option>
+                  <option value="3"@(Model.EnableKB == 3 ? " selected" : "")>@Html.Lang("Anyone")</option>
+                </select>
+              </td>
+            </tr>
+            <tr class="Body1">
+              <td><b>@Html.Lang("KBSQLFreeTextSearches"):</b></td>
+              <td><select name="kbfreetext"><option value="0"@(Model.KBFreeText == 0 ? " selected" : "")>@Html.Lang("Disable")</option><option value="1"@(Model.KBFreeText == 1 ? " selected" : "")>@Html.Lang("Enable")</option></select></td>
+            </tr>
+            <tr class="Body2">
+              <td><b>@Html.Lang("DefaultPriority"):</b></td>
+              <td><select name="defaultpriority">@foreach (var o in Model.Priorities) { <option value="@o.Id"@(o.Id == Model.DefaultPriority ? " selected" : "")>@o.Name</option> }</select></td>
+            </tr>
+            <tr class="Body1">
+              <td><b>@Html.Lang("DefaultStatus"):</b></td>
+              <td><select name="defaultstatus">@foreach (var o in Model.StatusesNonClose) { <option value="@o.Id"@(o.Id == Model.DefaultStatus ? " selected" : "")>@o.Name</option> }</select></td>
+            </tr>
+            <tr class="Body2">
+              <td><b>@Html.Lang("CloseStatus"):</b></td>
+              <td><select name="closestatus">@foreach (var o in Model.Statuses) { <option value="@o.Id"@(o.Id == Model.CloseStatus ? " selected" : "")>@o.Name</option> }</select></td>
+            </tr>
+            <tr class="Body1">
+              <td><b>@Html.Lang("AuthenticationType"):</b></td>
+              <td><select name="authtype">@foreach (var o in Model.AuthTypes) { <option value="@o.Id"@(o.Id == Model.AuthType ? " selected" : "")>@o.Name</option> }</select></td>
+            </tr>
+            <tr class="Body2">
+              <td><b>@Html.Lang("UseSelectUser"):</b></td>
+              <td><select name="useSelectUser"><option value="0"@(Model.UseSelectUser == 0 ? " selected" : "")>@Html.Lang("NO")</option><option value="1"@(Model.UseSelectUser == 1 ? " selected" : "")>@Html.Lang("YES")</option></select></td>
+            </tr>
+            <tr class="Body1">
+              <td><b>@Html.Lang("UseInOutBoard"):</b></td>
+              <td><select name="useInoutBoard"><option value="0"@(Model.UseInoutBoard == 0 ? " selected" : "")>@Html.Lang("NO")</option><option value="1"@(Model.UseInoutBoard == 1 ? " selected" : "")>@Html.Lang("YES")</option></select></td>
+            </tr>
+            <tr class="Body2">
+              <td><b>@Html.Lang("AllowImageUpload"):</b></td>
+              <td><select name="AllowImageUpload"><option value="0"@(Model.AllowImageUpload == 0 ? " selected" : "")>@Html.Lang("NO")</option><option value="1"@(Model.AllowImageUpload == 1 ? " selected" : "")>@Html.Lang("YES")</option></select></td>
+            </tr>
+            <tr class="Body1"><td><b>@Html.Lang("MaxImageSize"):</b></td><td><input type="text" size="30" name="MaxImageSize" value="@Model.MaxImageSize" /></td></tr>
+            <tr class="Body2">
+              <td><b>@Html.Lang("Defaultlanguage"):</b></td>
+              <td><select name="DefaultLanguage">@foreach (var o in Model.Languages) { <option value="@o.Id"@(o.Id == Model.DefaultLanguage ? " selected" : "")>@o.Name (@o.Localized)</option> }</select></td>
+            </tr>
+          </table>
+          <div align="right"><a href="/Admin">@Html.Lang("AdministrativeMenu")</a> | <b><a href="/Admin/ConfigHelp" target="#">@Html.Lang("Help")</a></b></div>
+        </td>
+      </tr>
+    </table>
+    <input type="submit" value="@Loc.Lang("Save")" />
+  </form>
+</div>
+@Html.Raw(Chrome.Footer())

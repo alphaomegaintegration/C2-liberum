@@ -1,0 +1,28 @@
+@model ProblemSubmittedVm
+@* Port of user/postnew.asp confirmation *@
+<div align="center">
+  <table class="Wide">
+    <tr class="Head1"><td>@Html.Lang("Problem")&nbsp;@Model.Id&nbsp;@Html.Lang("Submitted")</td></tr>
+    <tr class="Body1">
+      <td>
+        <table class="Wide">
+          <tr><td width="125"><b>@Html.Lang("ProblemID"):</b></td><td>@Model.Id</td></tr>
+          <tr><td><b>@Html.Lang("UserName"):</b></td><td>@Model.Uid</td></tr>
+          <tr><td><b>@Html.Lang("EMail"):</b></td><td>@Model.Uemail</td></tr>
+          <tr><td><b>@Html.Lang("Phone"):</b></td><td>@Model.Uphone</td></tr>
+          <tr><td><b>@Html.Lang("Location"):</b></td><td>@Model.Ulocation</td></tr>
+          <tr><td><b>@Html.Lang("StartDate"):</b></td><td>@Model.StartDate</td></tr>
+          <tr><td><b>@Html.Lang("DueDate"):</b></td><td>@Model.DueDate</td></tr>
+          <tr><td><b>@Html.Lang("Department"):</b></td><td>@Model.Dname</td></tr>
+          <tr><td><b>@Html.Lang("Category"):</b></td><td>@Model.Cname</td></tr>
+          <tr><td><b>@Html.Lang("Priority"):</b></td><td>@Model.Pname</td></tr>
+          <tr><td><b>@Html.Lang("AssignedTo"):</b></td><td><a href="mailto:@(Model.RepEmail)?Subject=@Loc.Lang("HELPDESK"): @Loc.Lang("Problem") @Model.Id">@Model.RepFname</a></td></tr>
+          <tr><td><b>@Html.Lang("Title"):</b></td><td>@Model.Title</td></tr>
+        </table>
+      </td>
+    </tr>
+    <tr class="Head2"><td>@Html.Lang("Description"):</td></tr>
+    <tr class="Body1"><td><center><form><textarea name="display_desc" rows="10" cols="80">@Model.Description</textarea></form></center></td></tr>
+  </table>
+</div>
+@Html.Raw(Chrome.Footer())

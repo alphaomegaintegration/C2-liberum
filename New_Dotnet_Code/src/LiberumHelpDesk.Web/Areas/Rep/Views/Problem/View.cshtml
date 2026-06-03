@@ -1,0 +1,87 @@
+@model RepListVm
+@{
+    int cols = Model.UseInout == 1 ? 7 : 6;
+    string Link(int sort, int ord) =>
+        $"/Rep/Problem/View?rep_id={Model.RepId}&start={Model.Start}&num={Model.NumToDisplay}&sort={sort}&order={ord}";
+    string PageLink(int st) =>
+        $"/Rep/Problem/View?rep_id={Model.RepId}&start={st}&num={Model.NumToDisplay}&sort={Model.Sort}&order={Model.Order}";
+}
+@* Port of rep/view.asp *@
+@if (Model.HasResults)
+{
+  <div align="center">
+    <table class="Wide">
+      <tr class="Head1">
+        <td colspan="@cols">
+          @Html.Lang("Problemsfor")&nbsp;@Model.Ruid@(Model.DisplayTotal ? Html.Raw($"&nbsp;({Loc.Lang("Total")}:{Model.Total})") : null)
+        </td>
+      </tr>
+      <tr align="center" class="Head2">
+        <td nowrap><a href="@Link(1, Model.IdOrder)" class="HeadLink">@Html.Lang("ID")</a></td>
+        <td><a href="@Link(2, Model.TitleOrder)" class="HeadLink">@Html.Lang("Title")</a></td>
+        <td nowrap><a href="@Link(3, Model.UidOrder)" class="HeadLink">@Html.Lang("UserName")</a></td>
+        @if (Model.UseInout == 1)
+        {
+          <td><div class="info">i</div></td>
+        }
+        <td nowrap><a href="@Link(4, Model.DateOrder)" class="HeadLink">@Html.Lang("DateSubmitted")</a></td>
+        <td><a href="@Link(5, Model.PriOrder)" class="HeadLink">@Html.Lang("Priority")</a></td>
+        <td><a href="@Link(6, Model.StatusOrder)" class="HeadLink">@Html.Lang("Status")</a></td>
+      </tr>
+      @foreach (var r in Model.Rows)
+      {
+        <tr align="center" valign="center" class="Body1">
+          <td nowrap>@r.Id</td>
+          <td><a href="/Rep/Problem/Details?id=@r.Id">@r.Title</a></td>
+          <td nowrap><a href="mailto:@(r.Uemail)?Subject=HELPDESK: Problem @r.Id">@r.Uid</a></td>
+          @if (Model.UseInout == 1)
+          {
+            @if (r.InoutSid.HasValue)
+            {
+              <td><a href="/Inout/Details?id=@r.InoutSid"><div class="info">i</div></a></td>
+            }
+            else
+            {
+              <td>&nbsp;</td>
+            }
+          }
+          <td nowrap>@r.StartDate</td>
+          <td nowrap>@r.Pname</td>
+          <td nowrap>@r.Sname</td>
+        </tr>
+      }
+    </table>
+  </div>
+  <div align="center">
+    @if (Model.ShowPrev)
+    {
+      <a href="@PageLink(Model.StartP)">Previous</a><text>&nbsp;</text>
+    }
+    @if (Model.ShowNext)
+    {
+      <a href="@PageLink(Model.StartN)">Next</a>
+    }
+  </div>
+}
+else
+{
+  <div align="center">
+    <table Class="Wide">
+      <tr class="Head1"><td colspan="6" valign="center"><font size="+2"><b>@Html.Lang("Problemsfor")&nbsp;@Model.Ruid</b></font></td></tr>
+      <tr align="center" class="Head2">
+        <td nowrap>@Html.Lang("ID")</td>
+        <td>@Html.Lang("Title")</td>
+        <td nowrap>@Html.Lang("UserName")</td>
+        @if (Model.UseInout == 1)
+        {
+          <td><div class="info">i</div></td>
+        }
+        <td nowrap>@Html.Lang("DateSubmitted")</td>
+        <td>@Html.Lang("Priority")</td>
+        <td>@Html.Lang("Status")</td>
+      </tr>
+      <tr align="center" class="Body1"><td colspan="6">@Html.Lang("Noresultsfound").</td></tr>
+    </table>
+  </div>
+}
+@Html.Raw(Chrome.Footer())

@@ -1,0 +1,26 @@
+# systemd unit for the .NET 10 port of LiberumASP (NO Docker — runs Kestrel directly).
+# Install: copy to /etc/systemd/system/liberumhelpdesk.service, then:
+#   sudo systemctl daemon-reload && sudo systemctl enable --now liberumhelpdesk
+[Unit]
+Description=Liberum Help Desk (.NET 10 port of LiberumASP)
+After=network.target
+
+[Service]
+WorkingDirectory=/opt/liberumhelpdesk
+ExecStart=/usr/bin/dotnet /opt/liberumhelpdesk/LiberumHelpDesk.Web.dll
+Restart=always
+RestartSec=5
+KillSignal=SIGINT
+SyslogIdentifier=liberumhelpdesk
+User=www-data
+
+# The SQLite file lives outside the app dir so publishes don't clobber it.
+Environment=ASPNETCORE_ENVIRONMENT=Production
+Environment=ASPNETCORE_URLS=http://0.0.0.0:5000
+Environment=ConnectionStrings__HelpDesk=Data Source=/var/lib/liberum/helpdesk.db;Cache=Shared
+Environment=Liberum__Culture=en-US
+# Set to true once, on first boot, to seed the schema + base data + the 7 language files:
+Environment=Liberum__SeedOnStartup=true
+
+[Install]
+WantedBy=multi-user.target

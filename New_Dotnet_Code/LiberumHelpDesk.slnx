@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/LiberumHelpDesk.Web/LiberumHelpDesk.Web.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/LiberumHelpDesk.Tests/LiberumHelpDesk.Tests.csproj" />
+  </Folder>
+</Solution>

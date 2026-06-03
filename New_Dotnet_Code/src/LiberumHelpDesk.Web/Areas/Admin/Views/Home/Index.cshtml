@@ -1,0 +1,49 @@
+@{
+    var showGate = (bool)(ViewData["ShowGate"] ?? false);
+    var wrongPassword = (bool)(ViewData["WrongPassword"] ?? false);
+}
+@* Port of admin/default.asp (password gate + menu) *@
+@if (showGate)
+{
+  <div align="center">
+    <table class="Normal">
+      <tr class="Head1"><td>@Html.Lang("AdministrativeLogon")</td></tr>
+      <tr class="Body1">
+        <td>
+          <p>&nbsp;</p>
+          @if (wrongPassword)
+          {
+            <div align="center">@Html.Lang("Passwordisincorrect")</div>
+          }
+          <form method="post" action="/Admin">
+            <div align="center">
+              <b>@Html.Lang("Password"):</b> <input type="password" name="password" size="20" />
+              <input type="submit" value="@Loc.Lang("Logon")" />
+            </div>
+          </form>
+        </td>
+      </tr>
+    </table>
+  </div>
+  @Html.Raw(Chrome.Footer())
+}
+else
+{
+  <div align="center">
+    <table class="Normal">
+      <tr class="Head1"><td>@Html.Lang("AdministrativeMenu")</td></tr>
+      <tr class="Body1" align="center"><td><a href="/Admin/Config">@Html.Lang("Configure")&nbsp;@Html.Lang("Site")</a></td></tr>
+      <tr class="Body1" align="center"><td><a href="/Admin/Test">@Html.Lang("TestConfiguration")</a></td></tr>
+      <tr class="Body1" align="center"><td><a href="/Admin/CfgEmail">@Html.Lang("Configure")&nbsp;@Html.Lang("EmailMessages")</a></td></tr>
+      <tr class="Body1" align="center"><td><a href="/Admin/AdminPass">@Html.Lang("ChangeAdminPassword")</a></td></tr>
+      <tr class="Body1" align="center"><td><a href="/Admin/ViewUsers">@Html.Lang("Manage")&nbsp;@Html.Lang("Users")</a></td></tr>
+      <tr class="Body1" align="center"><td><a href="/Admin/ViewCat">@Html.Lang("Manage")&nbsp;@Html.Lang("Categories")</a></td></tr>
+      <tr class="Body1" align="center"><td><a href="/Admin/ViewDep">@Html.Lang("Manage")&nbsp;@Html.Lang("Departments")</a></td></tr>
+      <tr class="Body1" align="center"><td><a href="/Admin/ViewPri">@Html.Lang("Manage")&nbsp;@Html.Lang("Priorities")</a></td></tr>
+      <tr class="Body1" align="center"><td><a href="/Admin/ViewStatus">@Html.Lang("Manage")&nbsp;@Html.Lang("Statuses")</a></td></tr>
+      <tr class="Body1" align="center"><td><a href="/Admin/ViewLang">@Html.Lang("Manage")&nbsp;@Html.Lang("Languages")</a></td></tr>
+      <tr class="Body1" align="center"><td><a href="/Admin/Reports">@Html.Lang("Reports")</a></td></tr>
+    </table>
+  </div>
+  @Html.Raw(Chrome.Footer())
+}

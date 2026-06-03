@@ -1,0 +1,29 @@
+@model UserFormVm
+@{ var newUid = (ViewData["NewUid"] as string) ?? ""; }
+@* Port of admin/adduser.asp *@
+<div align="center">
+  <table class="Normal">
+    <tr class="Head1"><td>@Html.Lang("AddNewUsers")</td></tr>
+    @if (Model.Success)
+    {
+      <tr class="Head2"><td><div align="center">@Html.Lang("AccountCreated"): '@newUid'</div></td></tr>
+    }
+    <tr class="Body1">
+      <td>
+        <form name="upduser" action="/Admin/AddUser" method="POST">
+          <input type="hidden" name="save" value="1" />
+          <table class="Normal">
+            @* The "* = Required" legend is rendered by _UserFields (shared with moduser); do not duplicate it here. *@
+            @await Html.PartialAsync("_UserFields", Model)
+          </table>
+          <div align="center"><input type="submit" value="@Loc.Lang("Save")" /></div>
+        </form>
+      </td>
+    </tr>
+  </table>
+  <p>
+    <a href="/Admin/ViewUsers">@Html.Lang("ManageUsers")</a><br />
+    <a href="/Admin">@Html.Lang("AdministrativeMenu")</a>
+  </p>
+</div>
+@Html.Raw(Chrome.Footer())

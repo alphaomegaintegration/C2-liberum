@@ -1,0 +1,33 @@
+@model List<UserListRowVm>
+@* Port of admin/viewusers.asp *@
+<div align="center">
+  <table class="Normal">
+    <tr class="Head1"><td colspan="4">@Html.Lang("ManageUsers")</td></tr>
+    <tr class="Body1">
+      <td>
+        <div align="center">
+          @if (Model.Count > 0)
+          {
+            <form method="POST" action="/Admin/ModUser">
+              <select name="usersid" size="5">
+                @{ var first = true; }
+                @foreach (var u in Model)
+                {
+                  if (first) { <option value="@u.Sid" selected>@u.Uid (@u.Fname)</option> }
+                  else { <option value="@u.Sid">@u.Uid (@u.Fname)</option> }
+                  first = false;
+                }
+              </select>
+              <p><input type="submit" value="@Loc.Lang("EditUserAccount")" /></p>
+            </form>
+          }
+          <form name="addusr" method="POST" action="/Admin/AddUser">
+            <input type="submit" value="@Loc.Lang("AddNewUsers")" />
+          </form>
+        </div>
+      </td>
+    </tr>
+  </table>
+  <p><a href="/Admin">@Html.Lang("AdministrativeMenu")</a></p>
+</div>
+@Html.Raw(Chrome.Footer())

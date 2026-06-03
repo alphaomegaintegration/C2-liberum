@@ -1,0 +1,21 @@
+@{ var siteName = (ViewData["SiteName"] as string) ?? ""; }
+@* Port of logoff.asp *@
+<div align="center">
+  <table Class="Normal">
+    <tr class="Head1">
+      <td>
+        @siteName
+        <br />
+        @Html.Lang("HelpDesk")
+      </td>
+    </tr>
+    <tr Class="Body1">
+      <td align="center">
+        @Html.Lang("Yoursessionhasbeenloggedoff").
+        <p></p>
+        <b><a href="@(Cfg.GetString("BaseURL"))/logon.asp">@Html.Lang("Clickheretologin").</a></b>
+      </td>
+    </tr>
+  </table>
+</div>
+@Html.Raw(Chrome.Footer())

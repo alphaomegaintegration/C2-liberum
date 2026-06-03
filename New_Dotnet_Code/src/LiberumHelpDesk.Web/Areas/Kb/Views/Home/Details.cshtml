@@ -1,0 +1,54 @@
+@model KbDetailsVm
+@* Port of kb/details.asp *@
+<div align="center">
+  <table Class="Normal">
+    <tr><td colspan="2" align="right"><a href="/Kb/Print?id=@Model.Id" target="printwindow">@Html.Lang("PrinterFriendly")</a></td></tr>
+    <tr class="Head1"><td colspan="2">@Html.Lang("DetailsforProblem")&nbsp;@Model.Id</td></tr>
+    <tr class="Body1">
+      <td colspan="2">
+        <table class="Normal">
+          <tr><td width="125" valign="top"><b>@Html.Lang("ProblemID"):</b></td><td>@Model.Id</td></tr>
+          <tr><td><b>@Html.Lang("StartDate"):</b></td><td>@Model.StartDate</td></tr>
+          <tr><td><b>@Html.Lang("CloseDate"):</b></td><td>@Model.CloseDate</td></tr>
+          <tr><td><b>@Html.Lang("Category"):</b></td><td>@Model.Cname</td></tr>
+        </table>
+      </td>
+    </tr>
+    <tr class="Head2"><td>@Html.Lang("ProblemInformation"):</td></tr>
+    <tr class="Body1">
+      <td>
+        <form>
+          <b>@Html.Lang("Title"):</b><br />
+          <input type="text" size="50" readonly name="display_title" value="@Model.Title" />
+          <p></p>
+          <b>@Html.Lang("Description"):</b><br />
+          <textarea readonly name="display_desc" rows="8" cols="80">@Model.Description</textarea>
+        </form>
+      </td>
+    </tr>
+    <tr class="Head2"><td>@Html.Lang("Notes"):</td></tr>
+    <tr class="Body1">
+      <td colspan="2">
+        @if (Model.Notes.Count == 0)
+        {
+          @Html.Lang("NoAvailableNotes")
+        }
+        else
+        {
+          foreach (var n in Model.Notes)
+          {
+            <b>[@n.DateRaw]</b><br />
+            @Html.Raw(n.NoteHtml)
+            <p></p>
+          }
+        }
+      </td>
+    </tr>
+    <tr class="Head2"><td>@Html.Lang("Solution"):</td></tr>
+    <tr class="Body1">
+      <td><div align="center"><form><textarea name="display_solution" rows="8" cols="80" wrap="on">@Model.Solution</textarea></form></div></td>
+    </tr>
+  </table>
+  <p><a href="/Kb">@Html.Lang("SearchAgain")</a><br /></p>
+</div>
+@Html.Raw(Chrome.Footer())

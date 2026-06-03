@@ -1,0 +1,64 @@
+@model SelectUserVm
+@* Port of rep/selectuser.asp (popup user picker; no footer in original) *@
+<script language="JavaScript">
+  function updateParent(formval, uid) {
+     opener.document.newProbForm.uselectid.value = formval;
+     var element = opener.document.getElementById("selectUserText");
+     if (element.hasChildNodes())
+       element.firstChild.nodeValue = uid;
+     else
+       element.appendChild(opener.document.createTextNode(uid));
+     opener.document.newProbForm.uid.disabled = true;
+     opener.document.newProbForm.uid.value = '';
+     opener.document.newProbForm.uemail.disabled = true;
+     opener.document.newProbForm.uemail.value = '';
+     opener.document.newProbForm.department.disabled = true;
+     opener.document.newProbForm.department.value = 0;
+     opener.document.newProbForm.ulocation.disabled = true;
+     opener.document.newProbForm.ulocation.value = '';
+     opener.document.newProbForm.uphone.disabled = true;
+     opener.document.newProbForm.uphone.value = '';
+     self.close();
+     return false;
+  }
+</script>
+<form method="post" action="/Rep/SelectUser" name="selectUserForm">
+  <input type="hidden" name="postform" value="1" />
+  <div align="center">
+    <table class="Normal">
+      <tr class="Head1"><td colspan="5">@Html.Lang("SelectUser")</td></tr>
+      <tr class="Body1">
+        <td colspan="5">
+          <input type="text" size="15" name="searchname" value="@Model.SearchName" /> <input type="submit" value="@Loc.Lang("Search")" />
+        </td>
+      </tr>
+      @if (Model.Posted)
+      {
+        if (Model.Users.Count == 0)
+        {
+          <tr align="center" class="Body1"><td colspan="5">@Html.Lang("Noresultsfound").</td></tr>
+        }
+        else
+        {
+          <tr align="center" class="Head2">
+            <td nowrap>@Html.Lang("LastName")</td>
+            <td>@Html.Lang("FirstName")</td>
+            <td nowrap>@Html.Lang("UserName")</td>
+            <td nowrap>@Html.Lang("Location")</td>
+            <td nowrap>&nbsp;</td>
+          </tr>
+          foreach (var u in Model.Users)
+          {
+            <tr valign="center" class="Body1">
+              <td nowrap>@u.Lastname</td>
+              <td nowrap>@u.Firstname</td>
+              <td nowrap>@u.Uid</td>
+              <td nowrap>@u.Location1</td>
+              <td nowrap align="center"><a href="javascript:updateParent('@u.Sid', '@u.Uid')">Select</a></td>
+            </tr>
+          }
+        }
+      }
+    </table>
+  </div>
+</form>

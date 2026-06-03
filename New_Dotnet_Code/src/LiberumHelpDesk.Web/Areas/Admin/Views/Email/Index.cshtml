@@ -1,0 +1,72 @@
+@{
+    var displayMenu = (bool)(ViewData["DisplayMenu"] ?? true);
+    var saved = (bool)(ViewData["Saved"] ?? false);
+    var eType = (ViewData["EType"] as string) ?? "";
+    var subject = (ViewData["Subject"] as string) ?? "";
+    var body = (ViewData["Body"] as string) ?? "";
+}
+@* Port of admin/cfgemail.asp *@
+<div align="center">
+  <table class="Normal">
+    <tr class="Head1"><td>@Html.Lang("EmailMessages")</td></tr>
+    @if (displayMenu)
+    {
+      <tr class="Body1">
+        <td>
+          <form method="post" action="/Admin/CfgEmail">
+            <table class="Normal">
+              <tr>
+                <td width="120"><b>@Html.Lang("Message"):</b></td>
+                <td>
+                  <select name="type">
+                    <option value="usernew">@Html.Lang("User") - @Html.Lang("New")</option>
+                    <option value="userupdate">@Html.Lang("User") - @Html.Lang("Update")</option>
+                    <option value="userclose">@Html.Lang("User") - @Html.Lang("Close")</option>
+                    <option value="repnew">@Html.Lang("Rep") - @Html.Lang("New")</option>
+                    <option value="repupdate">@Html.Lang("Rep") - @Html.Lang("Update")</option>
+                    <option value="repclose">@Html.Lang("Rep") - @Html.Lang("Close")</option>
+                    <option value="reppager">@Html.Lang("Rep") - @Html.Lang("Pager")</option>
+                  </select>
+                </td>
+              </tr>
+            </table>
+            <div align="center"><input type="submit" value="@Loc.Lang("EditMessage")" /></div>
+          </form>
+        </td>
+      </tr>
+    }
+    else
+    {
+      @if (saved)
+      {
+        <tr class="Head2"><td><div align="center"><i>@Html.Lang("MessageSaved").</i></div></td></tr>
+      }
+      <tr class="Body1">
+        <td>
+          <form method="post" action="/Admin/CfgEmail">
+            <input type="hidden" name="save" value="1" />
+            <input type="hidden" name="type" value="@eType" />
+            <table class="Normal">
+              <tr><td width="120"><b>@Html.Lang("Subject"):</b></td><td><input type="text" size="50" name="subject" value="@subject" /></td></tr>
+            </table>
+            <b>@Html.Lang("Body"):</b><br />
+            <div align="center">
+              <b>Plain Text</b><br />
+              <textarea rows="8" cols="80" name="body">@body</textarea>
+              <p><a href="/Admin/CfgEmailHelp" target="#">@Html.Lang("SyntaxHelp")</a></p>
+              <input type="submit" value="@Loc.Lang("Save")" />
+            </div>
+          </form>
+        </td>
+      </tr>
+    }
+  </table>
+  <p>
+    @if (!displayMenu)
+    {
+      <a href="/Admin/CfgEmail">@Html.Lang("Chooseanothermessage")</a><br />
+    }
+    <a href="/Admin">@Html.Lang("AdministrativeMenu")</a>
+  </p>
+</div>
+@Html.Raw(Chrome.Footer())

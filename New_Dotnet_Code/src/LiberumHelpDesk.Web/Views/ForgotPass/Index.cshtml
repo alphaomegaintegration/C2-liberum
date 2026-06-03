@@ -1,0 +1,40 @@
+@{
+    var success = (bool)(ViewData["Success"] ?? false);
+    var invalidUid = (bool)(ViewData["InvalidUid"] ?? false);
+}
+@* Port of forgotpass.asp *@
+<div align="center">
+  <table class="Narrow">
+    <tr class="Head1"><td>@Html.Lang("EmailPassword")</td></tr>
+    <tr class="Body1">
+      <td>
+        @if (success)
+        {
+          <div align="center">
+            <u><h3>@Html.Lang("PasswordSent")</h3></u>
+            <p>@Html.Lang("PasswordSentText").</p>
+            <p><b><a href="/Logon">@Html.Lang("HelpDesk")&nbsp;@Html.Lang("Logon")</a></b></p>
+          </div>
+        }
+        else
+        {
+          <form action="/ForgotPass" method="POST">
+            <input type="hidden" name="email" value="1" />
+            <div align="center">
+              <u><h3>@Html.Lang("EnterUsername")</h3></u>
+              @if (invalidUid)
+              {
+                <i>@Html.Lang("Invalidusername").</i>
+                <br /><br />
+              }
+              <input type="text" name="uid" size="15" />
+              <br /><br />
+              <input type="submit" value="@Loc.Lang("EmailPassword")" />
+            </div>
+          </form>
+        }
+      </td>
+    </tr>
+  </table>
+</div>
+@Html.Raw(Chrome.Footer())

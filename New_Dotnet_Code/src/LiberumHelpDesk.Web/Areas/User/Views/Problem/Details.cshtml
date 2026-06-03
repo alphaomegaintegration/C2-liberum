@@ -1,0 +1,95 @@
+@model ProblemDetailsVm
+@* Port of user/details.asp *@
+<div align="center">
+  <table Class="Normal">
+    <tr>
+      <td colspan="2" align="right">
+        <em>*</em> = @Html.Lang("Required") |
+        <a href="/User/Problem/Print?id=@Model.Id" target="printwindow">@Html.Lang("PrinterFriendly")</a>
+      </td>
+    </tr>
+    <tr class="Head1"><td colspan="2">@Html.Lang("DetailsforProblem")&nbsp;@Model.Id</td></tr>
+    <tr class="Body1">
+      <td colspan="2">
+        <table class="Normal" border="0" cellspacing="0">
+          <tr>
+            <td colspan="2">
+              @if (Model.IsClosed)
+              {
+                <div align="center"><b><a href="/Rep/Problem/Details?id=@Model.Id&reopen=1">@Html.Lang("ReopenProblem")</a></b></div>
+              }
+            </td>
+          </tr>
+          <tr><td width="125" valign="top"><b>@Html.Lang("ProblemID"):</b></td><td>@Model.Id</td></tr>
+          <tr><td><b>@Html.Lang("UserName"):</b></td><td>@Model.Uid</td></tr>
+          <tr><td><b>@Html.Lang("EMail"):</b></td><td>@Model.Uemail</td></tr>
+          <tr><td><b>@Html.Lang("Phone"):</b></td><td>@Model.Uphone</td></tr>
+          <tr><td><b>@Html.Lang("Location"):</b></td><td>@Model.Ulocation</td></tr>
+          <tr><td><b>@Html.Lang("StartDate"):</b></td><td>@Model.StartDate</td></tr>
+          <tr><td><b>@Html.Lang("DueDate"):</b></td><td>@Model.DueDate</td></tr>
+          @if (Model.IsClosed)
+          {
+            <tr><td><b>@Html.Lang("CloseDate"):</b></td><td>@Model.CloseDate</td></tr>
+          }
+          <tr><td><b>@Html.Lang("Department"):</b></td><td>@Model.Dname</td></tr>
+          <tr><td><b>@Html.Lang("Category"):</b></td><td>@Model.Cname</td></tr>
+          <tr><td><b>@Html.Lang("Priority"):</b></td><td>@Model.Pname</td></tr>
+          <tr><td><b>@Html.Lang("AssignedTo"):</b></td><td><a href="mailto:@(Model.RepEmail)?Subject=@Loc.Lang("HelpDesk"):&nbsp;@Loc.Lang("Problem")&nbsp;@Model.Id">@Model.RepFname</a></td></tr>
+          <tr><td><b>@Html.Lang("Status"):</b></td><td>@Model.Sname</td></tr>
+        </table>
+      </td>
+    </tr>
+    <tr class="Head2"><td>@Html.Lang("ProblemInformation"):</td></tr>
+    <tr class="Body1">
+      <td>
+        <form>
+          <b>@Html.Lang("Title"):</b><br />
+          <input type="text" size="50" readonly name="display_title" value="@Model.Title" />
+          <p></p>
+          <b>@Html.Lang("Description"):</b><br />
+          <textarea readonly name="display_desc" rows="8" cols="80">@Model.Description</textarea>
+        </form>
+      </td>
+    </tr>
+    <tr class="Head2"><td>@Html.Lang("Notes"):</td></tr>
+    <tr class="Body1">
+      <td colspan="2">
+        @if (Model.Notes.Count == 0)
+        {
+          @Html.Lang("NoAvailableNotes")
+        }
+        else
+        {
+          foreach (var n in Model.Notes)
+          {
+            <b>[@n.DateDisplay - @n.Uid]</b><br />
+            @Html.Raw(n.NoteHtml)
+            <p>&nbsp;</p>
+          }
+        }
+      </td>
+    </tr>
+    @if (!Model.IsClosed)
+    {
+      <tr class="Head2"><td>@Html.Lang("EnterAdditionalNotes"):</td></tr>
+      <tr class="Body1">
+        <td>
+          <form method="post" action="/User/Problem/Update">
+            <input type="hidden" name="id" value="@Model.Id" />
+            <div align="center"><textarea name="notes" rows="8" cols="80" wrap="on"></textarea></div>
+            <div align="center"><input type="submit" value="@Loc.Lang("UpdateProblem")" name="B1" />&nbsp;<input type="reset" value="@Loc.Lang("ClearNotes")" name="B2" /></div>
+          </form>
+        </td>
+      </tr>
+    }
+    else
+    {
+      <tr class="Head2"><td>@Html.Lang("Solution"):</td></tr>
+      <tr class="Body1">
+        <td><div align="center"><form><textarea name="display_solution" rows="8" cols="80" wrap="on">@Model.Solution</textarea></form></div></td>
+      </tr>
+    }
+  </table>
+  <p><a href="/User/Problem/View">@Html.Lang("ProblemListing")</a></p>
+</div>
+@Html.Raw(Chrome.Footer())

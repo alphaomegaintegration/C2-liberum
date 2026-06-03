@@ -1,0 +1,53 @@
+@model ProblemListVm
+@{
+    string Link(int sort, int order) =>
+        $"/User/Problem/View?start={Model.Start}&num={Model.NumToDisplay}&sort={sort}&order={order}";
+}
+@* Port of user/view.asp *@
+<div align="center">
+  <table class="Wide">
+    <tr class="Head1"><td colspan="5">@Html.Lang("ProblemListingfor")&nbsp;@Model.Uid</td></tr>
+    <tr class="Head2" align="center">
+      <td nowrap><a href="@Link(1, Model.IdOrder)" class="HeadLink">@Html.Lang("ID")</a></td>
+      <td><a href="@Link(2, Model.TitleOrder)" class="HeadLink">@Html.Lang("Title")</a></td>
+      <td nowrap><a href="@Link(3, Model.RepOrder)" class="HeadLink">@Html.Lang("AssignedTo")</a></td>
+      <td nowrap><a href="@Link(4, Model.DateOrder)" class="HeadLink">@Html.Lang("DateSubmitted")</a></td>
+      <td nowrap><a href="@Link(5, Model.StatusOrder)" class="HeadLink">@Html.Lang("Status")</a></td>
+    </tr>
+    @if (Model.Rows.Count > 0)
+    {
+      foreach (var r in Model.Rows)
+      {
+        <tr class="Body1">
+          <td nowrap><div align="center">@r.Id</div></td>
+          <td><div align="center"><a href="/User/Problem/Details?id=@r.Id">@r.Title</a></div></td>
+          <td nowrap><div align="center"><a href="mailto:@(r.Remail)?Subject=HELPDESK: Problem @r.Id">@r.Fname</a></div></td>
+          <td nowrap><div align="center">@r.StartDate</div></td>
+          <td nowrap><div align="center">@r.Sname</div></td>
+        </tr>
+      }
+      if (Model.ShowPager)
+      {
+        <tr class="Head2">
+          <td colspan="5">
+            <div align="center">
+              @if (Model.ShowPrev)
+              {
+                <a class="HeadLink" href="/User/Problem/View?start=@Model.StartP&num=@Model.NumToDisplay&sort=@Model.Sort&order=@Model.Order">@Html.Lang("Previous")</a><text>&nbsp;</text>
+              }
+              @if (Model.ShowNext)
+              {
+                <a class="HeadLink" href="/User/Problem/View?start=@Model.StartN&num=@Model.NumToDisplay&sort=@Model.Sort&order=@Model.Order">@Html.Lang("Next")</a>
+              }
+            </div>
+          </td>
+        </tr>
+      }
+    }
+    else
+    {
+      <tr class="Body1"><td colspan="5"><div align="center"><b>@Html.Lang("Noresultsfound").</b></div></td></tr>
+    }
+  </table>
+</div>
+@Html.Raw(Chrome.Footer())

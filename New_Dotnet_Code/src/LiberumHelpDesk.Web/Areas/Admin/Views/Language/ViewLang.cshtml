@@ -1,0 +1,32 @@
+@model List<LangListRow>
+@* Port of admin/viewlang.asp *@
+<div align="center">
+  <table class="Normal">
+    <tr class="Head1"><td colspan="3">@Html.Lang("Languages")</td></tr>
+    <tr class="Head2">
+      <td><div align="center">@Html.Lang("Language")</div></td>
+      <td><div align="center">@Html.Lang("Localized")</div></td>
+      <td><div align="center">@Html.Lang("Modify")</div></td>
+    </tr>
+    @foreach (var l in Model)
+    {
+      <tr class="Body1">
+        <td align="center">@l.LangName</td>
+        <td align="center">@l.Localized</td>
+        <td align="center">
+          @if (l.Id != 1)
+          {
+            <a href="/Admin/Modify?mtype=6&id=@l.Id">@Html.Lang("Edit")</a>
+            <text>&nbsp;|&nbsp;</text>
+            <a href="/Admin/ConfDelete?mtype=6&id=@l.Id">@Html.Lang("Delete")</a>
+            <text>&nbsp;|&nbsp;</text>
+          }
+          <a href="/Admin/ViewLangString?lang_id=@l.Id">@Html.Lang("Strings")</a>
+        </td>
+      </tr>
+    }
+  </table>
+  <p><form method="post" action="/Admin/Modify?mtype=6"><input type="submit" value="@(Loc.Lang("AddNew") + " " + Loc.Lang("Language"))" /></form></p>
+  <p><a href="/Admin">@Html.Lang("AdministrativeMenu")</a></p>
+</div>
+@Html.Raw(Chrome.Footer())

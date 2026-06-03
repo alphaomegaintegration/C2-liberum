@@ -1,0 +1,30 @@
+@model PrintProblemVm
+@* Port of kb/print.asp (printer-friendly KB article, no footer) *@
+<div align="center">
+  <table Class="Wide">
+    <tr class="Head1"><td colspan="2"><b>@Html.Lang("DetailsforProblem")&nbsp;@Model.Id</b></td></tr>
+    <tr class="Body1">
+      <td>
+        <table border="0" cellspacing="0" cellpadding="0">
+          <tr><td width="45%"><b>@Html.Lang("ProblemID"):</b></td><td>@Model.Id</td></tr>
+          <tr><td><b>@Html.Lang("Title"):</b></td><td>@Model.Title</td></tr>
+          <tr><td><b>@Html.Lang("StartDate"):</b></td><td>@Model.StartDate</td></tr>
+          <tr><td><b>@Html.Lang("CloseDate"):</b></td><td>@Model.CloseDate</td></tr>
+          <tr><td><b>@Html.Lang("Category"):</b></td><td>@Model.Cname</td></tr>
+        </table>
+      </td>
+    </tr>
+    <tr class="Head2"><td colspan="2">@Html.Lang("Description"):</td></tr>
+    <tr class="Body1"><td colspan="2">@Html.Raw(Model.DescriptionHtml)</td></tr>
+    <tr class="Head2"><td colspan="2">@Html.Lang("Notes"):</td></tr>
+    <tr class="Body1">
+      <td colspan="2">
+        @if (Model.Notes.Count == 0) { @Html.Lang("NoAvailableNotes") }
+        else { foreach (var n in Model.Notes) { <b>@n.Header</b><br />@Html.Raw(n.NoteHtml)<p></p> } }
+      </td>
+    </tr>
+    <tr class="Head2"><td colspan="2">@Html.Lang("Solution"):</td></tr>
+    <tr class="Body1"><td colspan="2">@Html.Raw(Model.SolutionHtml)</td></tr>
+  </table>
+  <form><input type="button" value="@Loc.Lang("CloseThisWindow")" onclick="javascript:window.close();" /></form>
+</div>

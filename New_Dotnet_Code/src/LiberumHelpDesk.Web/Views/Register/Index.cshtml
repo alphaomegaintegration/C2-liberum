@@ -1,0 +1,170 @@
+@model RegisterViewModel
+@* Port of register.asp *@
+<div align="center">
+  <table Class="Normal">
+    <tr Class="Head1">
+      <td>
+        @if (Model.Edit)
+        {
+          @Html.Lang("UpdateInformation")
+        }
+        else
+        {
+          @Html.Lang("Registration")<br />@Html.Lang("fornewusers")
+        }
+      </td>
+    </tr>
+    <tr class="body1">
+      <td>
+        @if (Model.Success && Model.Edit)
+        {
+          <div align="center">
+            <u><h3>@Html.Lang("AccountUpdated")</h3></u>
+            <p>@Html.Lang("accountupdatedtext").</p>
+            <p><b><a href="/">@Html.Lang("MainMenu")</a></b></p>
+          </div>
+        }
+        else if (Model.Success)
+        {
+          <div align="center">
+            <u><h3>@Html.Lang("AccountCreated")</h3></u>
+            <p>@Html.Lang("AccountCreatedText")</p>
+            <p><b><a href="/Logon">@Html.Lang("HelpDesk")&nbsp;@Html.Lang("Logon")</a></b></p>
+          </div>
+        }
+        else
+        {
+          <form action="/Register" method="POST">
+            @if (Model.Edit)
+            {
+              <input type="hidden" name="edit" value="1" />
+              <input type="hidden" name="create" value="1" />
+            }
+            else
+            {
+              <input type="hidden" name="create" value="1" />
+              <div align="center"><u><h3>@Html.Lang("Register")</h3></u></div>
+            }
+            <p>&nbsp;</p>
+            <table class="normal">
+              <tr>
+                <td width="150"><b>@Html.Lang("Username"): </b></td>
+                <td>
+                  @if (Model.Edit)
+                  {
+                    <b>@Model.UidDisplay</b>
+                  }
+                  else
+                  {
+                    <input type="text" name="uid" size="30" /><em>*</em>
+                  }
+                </td>
+              </tr>
+              <tr><td width="150"><b>@Html.Lang("FirstName"): </b></td><td><input type="text" name="firstname" size="30" value="@Model.FrmFirstname" /><em>*</em></td></tr>
+              <tr><td width="150"><b>@Html.Lang("LastName"): </b></td><td><input type="text" name="lastname" size="30" value="@Model.FrmLastname" /><em>*</em></td></tr>
+              <tr><td width="150"><b>@Html.Lang("Emailaddress"): </b></td><td><input type="text" name="email" size="30" value="@Model.FrmEmail" /><em>*</em></td></tr>
+              @if (Model.ShowPager)
+              {
+                <tr><td width="150"><b>@Html.Lang("PagerAddress"): </b></td><td><input type="text" name="pager" size="30" value="@Model.FrmPager" /></td></tr>
+              }
+              else
+              {
+                <input type="hidden" name="pager" value="" />
+              }
+              <tr><td width="150"><b>@Html.Lang("PhoneNumber"): </b></td><td><input type="text" name="phone" size="30" value="@Model.FrmPhone" /></td></tr>
+              @if (Model.UseInout)
+              {
+                <tr><td width="150"><b>@Html.Lang("HomePhone"): </b></td><td><input type="text" name="phone_home" size="30" value="@Model.FrmPhoneHome" /></td></tr>
+                <tr><td width="150"><b>@Html.Lang("MobilePhone"): </b></td><td><input type="text" name="phone_mobile" size="30" value="@Model.FrmPhoneMobile" /></td></tr>
+              }
+              else
+              {
+                <input type="hidden" name="phone_home" value="" />
+                <input type="hidden" name="phone_mobile" value="" />
+              }
+              <tr><td width="150"><b>@Html.Lang("Location"): </b></td><td><input type="text" name="location" size="30" value="@Model.FrmLocation" /></td></tr>
+              <tr>
+                <td width="150"><b>@Html.Lang("Department"): </b></td>
+                <td>
+                  <select name="department">
+                    <option value="0">@Html.Lang("NotSpecified")</option>
+                    @foreach (var d in Model.Departments)
+                    {
+                      if (d.Id == Model.FrmDepartment)
+                      {
+                        <option value="@d.Id" selected>@d.Name</option>
+                      }
+                      else
+                      {
+                        <option value="@d.Id">@d.Name</option>
+                      }
+                    }
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td width="150"><b>@Html.Lang("Language"): </b></td>
+                <td>
+                  <select name="usrLanguage">
+                    @foreach (var l in Model.Languages)
+                    {
+                      if (l.Id == Model.FrmUsrLanguage)
+                      {
+                        <option value="@l.Id" selected>@l.Name (@l.Localized)</option>
+                      }
+                      else
+                      {
+                        <option value="@l.Id">@l.Name (@l.Localized)</option>
+                      }
+                    }
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td width="150"><b>@Html.Lang("DateFormat"): </b></td>
+                <td>
+                  <select name="dateformat">
+                    @foreach (var df in Model.DateFormats)
+                    {
+                      if (df == Model.FrmDateFormat)
+                      {
+                        <option value="@df" selected>@df</option>
+                      }
+                      else
+                      {
+                        <option value="@df">@df</option>
+                      }
+                    }
+                  </select>
+                </td>
+              </tr>
+            </table>
+            @if (Model.AuthType == 2)
+            {
+              <hr width="80%" />
+              <table class="normal">
+                @if (Model.Edit)
+                {
+                  <tr><td width="150"><b>@Html.Lang("OldPassword"): </b></td><td><input type="password" name="oldpassword" size="30" /><em>*</em></td></tr>
+                }
+                <tr><td width="150"><b>@Html.Lang("Password"): </b></td><td><input type="password" name="password1" size="30" /><em>*</em></td></tr>
+                <tr><td width="150"><b>@Html.Lang("ConfirmPassword"): </b></td><td><input type="password" name="password2" size="30" /><em>*</em></td></tr>
+              </table>
+            }
+            else
+            {
+              <input type="hidden" name="oldpassword" value="" />
+              <input type="hidden" name="password1" value="" />
+              <input type="hidden" name="password2" value="" />
+            }
+            <div align="center">
+              <i><em>*</em> = @Html.Lang("Required")</i>
+              <p><input type="submit" value="@Loc.Lang("Submit")" /></p>
+            </div>
+          </form>
+        }
+      </td>
+    </tr>
+  </table>
+</div>
+@Html.Raw(Chrome.Footer())

@@ -1,0 +1,90 @@
+@model InoutBoardVm
+@{
+    var siteName = (ViewData["SiteName"] as string) ?? "";
+    string check = Model.MInoutStatusChecked ? "checked" : "";
+}
+@* Port of inout/default.asp (status board) *@
+<div align="center">
+  <table class="wide">
+    <tr class="Head1"><td>@siteName<br />@Html.Lang("InOutBoard")</td></tr>
+  </table>
+  <br />
+  <form method="post" action="/Inout?sort=@Model.Sort&order=@Model.Order">
+    <table class="inoutwide">
+      <tr class="normal">
+        <td colspan="7" align="right">
+          <input type="submit" name="button" value="@Loc.Lang("Search")" />
+          <input type="submit" name="button" value="@Loc.Lang("ClearForm")" />
+          <input type="submit" name="button" value="@Loc.Lang("ShowAll")" />
+        </td>
+      </tr>
+      <tr class="head2" align="center">
+        <td><a href="/Inout?sort=1&order=@Model.FirstNameOrder" class="HeadLink">@Html.Lang("FirstName")</a></td>
+        <td><a href="/Inout?sort=2&order=@Model.LastNameOrder" class="HeadLink">@Html.Lang("LastName")</a></td>
+        <td><a href="/Inout?sort=3&order=@Model.StatusOrder" class="HeadLink">X</a></td>
+        <td><a href="/Inout?sort=4&order=@Model.PhoneOrder" class="HeadLink">@Html.Lang("Phone")</a></td>
+        <td><a href="/Inout?sort=5&order=@Model.UserIDOrder" class="HeadLink">@Html.Lang("UserName")</a></td>
+        <td><a href="/Inout?sort=6&order=@Model.DeptOrder" class="HeadLink">@Html.Lang("Department")</a></td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr class="head2" align="center">
+        <td><input type="text" name="mFirstname" size="16" value="@Model.MFirstname" /></td>
+        <td><input type="text" name="mLastname" size="16" value="@Model.MLastname" /></td>
+        <td><input type="checkbox" name="mInoutStatus" value="1" @check /></td>
+        <td><input type="text" name="mPhone" size="9" value="@Model.MPhone" /></td>
+        <td><input type="text" name="mUid" size="8" value="@Model.MUid" /></td>
+        <td><input type="text" name="mDept" size="16" value="@Model.MDept" /></td>
+        <td>&nbsp;</td>
+      </tr>
+      @{ var rowClasses = new[] { "Body1", "Body2" }; var i = 0; }
+      @foreach (var r in Model.Rows)
+      {
+        var cls = rowClasses[i % 2]; i++;
+        <tr class="@cls">
+          <td>@r.Firstname</td>
+          <td>@r.Lastname</td>
+          @if (r.StatusCode == 2)
+          {
+            <td><a href="/Inout/Details?id=@r.Sid"><img src="/image/yellow_pin.gif" border="0" alt="(@r.StatusDate) @r.StatusText - @Loc.Lang("clickfordetails")" /></a></td>
+          }
+          else if (r.StatusCode == 1)
+          {
+            <td><a href="/Inout/Details?id=@r.Sid"><img src="/image/red_pin.gif" border="0" alt="(@r.StatusDate) @r.StatusText - @Loc.Lang("clickfordetails")" /></a></td>
+          }
+          else
+          {
+            <td><a href="/Inout/Details?id=@r.Sid"><img src="/image/green_pin.gif" border="0" alt="@Loc.Lang("Clickfordetails")" /></a></td>
+          }
+          <td>@r.Phone</td>
+          <td>@r.Uid</td>
+          <td>@r.Dname</td>
+          @if (r.CanEdit)
+          {
+            <td><a href="/Inout/Update?id=@r.Sid">@Html.Lang("Edit")</a></td>
+          }
+          else
+          {
+            <td>&nbsp;</td>
+          }
+        </tr>
+      }
+      @if (Model.Count > 0)
+      {
+        <tr class="body3"><td><font size="-2">@Model.Count&nbsp;@Html.Lang("recordsfound").</font></td></tr>
+        <tr class="body3c">
+          <td colspan="7"><br />
+            <img src="/image/green_pin.gif" border="0" />&nbsp;=&nbsp;@Html.Lang("In")&nbsp;&nbsp;&nbsp;
+            <img src="/image/red_pin.gif" border="0" />&nbsp;=&nbsp;@Html.Lang("Out")&nbsp;&nbsp;&nbsp;
+            <img src="/image/yellow_pin.gif" border="0" />&nbsp;=&nbsp;@Html.Lang("Leave")
+            <br /><br />@Html.Lang("inoutstatustext")
+          </td>
+        </tr>
+      }
+      else if (!Model.ClearForm)
+      {
+        <tr class="body3"><td><font size="-2">@Html.Lang("Noresultsfound").</font></td></tr>
+      }
+    </table>
+  </form>
+</div>
+@Html.Raw(Chrome.Footer())

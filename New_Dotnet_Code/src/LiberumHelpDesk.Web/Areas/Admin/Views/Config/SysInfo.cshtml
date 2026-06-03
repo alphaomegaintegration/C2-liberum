@@ -1,0 +1,16 @@
+@model List<(string Key, string Value)>
+@* Port of admin/sysinfo.asp (adapted for the SQLite/.NET host) *@
+<div align="center">
+  <table class="normal">
+    <tr class="Head1"><td colspan="2"><div align="center">System Information</div></td></tr>
+    <tr class="head2"><td>Setting</td><td>Value</td></tr>
+    @{ var n = 1; }
+    @foreach (var row in Model)
+    {
+      <tr class="body@n"><td>@row.Key</td><td>@row.Value</td></tr>
+      n = n == 1 ? 2 : 1;
+    }
+  </table>
+  <p><a href="/Admin">@Html.Lang("AdministrativeMenu")</a></p>
+</div>
+@Html.Raw(Chrome.Footer())

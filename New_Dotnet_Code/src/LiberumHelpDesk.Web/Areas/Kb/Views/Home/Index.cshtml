@@ -1,0 +1,67 @@
+@model KbSearchVm
+@* Port of kb/default.asp (search form + results) *@
+@if (!Model.Searched)
+{
+  <div align="center">
+    <table class="Normal">
+      <tr class="Head1"><td>@Html.Lang("KnowledgeBase")</td></tr>
+      <tr class="Body1">
+        <td>
+          <form method="post" action="/Kb">
+            <input type="hidden" name="search" value="1" />
+            <div align="center">
+              <table class="Normal">
+                <tr>
+                  <td width="100"><b>@Html.Lang("Keywords"):</b></td>
+                  <td><input type="text" size="50" name="keywords" /></td>
+                </tr>
+                <tr>
+                  <td valign="top"><b>@Html.Lang("SearchFields"):</b></td>
+                  <td>
+                    <input type="checkbox" name="title" checked /> @Html.Lang("Title")<br />
+                    <input type="checkbox" name="description" checked /> @Html.Lang("Description")<br />
+                    <input type="checkbox" name="solution" checked /> @Html.Lang("Solution")<br />
+                  </td>
+                </tr>
+              </table>
+              <input type="submit" value="@Loc.Lang("Search")" />
+            </div>
+          </form>
+        </td>
+      </tr>
+    </table>
+  </div>
+}
+else if (Model.Results.Count == 0)
+{
+  <div align="center">
+    <table class="Wide">
+      <tr class="Head1"><td>@Html.Lang("KnowledgeBase")</td></tr>
+      <tr class="Body1"><td><div align="center"><b>@Html.Lang("Noresultsfound").</b></div></td></tr>
+    </table>
+  </div>
+  <div align="center"><a href="/Kb">@Html.Lang("SearchAgain")</a></div>
+}
+else
+{
+  <div align="center">
+    <table class="Wide">
+      <tr class="Head1"><td colspan="3">@Html.Lang("KnowledgeBase")</td></tr>
+      <tr class="Head2">
+        <td width="250"><div align="center">@Html.Lang("Title")</div></td>
+        <td><div align="center">@Html.Lang("StartDate")</div></td>
+        <td><div align="center">@Html.Lang("CloseDate")</div></td>
+      </tr>
+      @foreach (var r in Model.Results)
+      {
+        <tr class="Body1">
+          <td><div align="center"><a href="/Kb/Details?id=@r.Id">@r.Title</a></div></td>
+          <td><div align="center">@r.StartDate</div></td>
+          <td><div align="center">@r.CloseDate</div></td>
+        </tr>
+      }
+    </table>
+  </div>
+  <div align="center"><a href="/Kb">@Html.Lang("SearchAgain")</a></div>
+}
+@Html.Raw(Chrome.Footer())

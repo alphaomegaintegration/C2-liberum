@@ -1,0 +1,107 @@
+@model UserFormVm
+@* Shared user form fields for adduser/moduser *@
+<tr><td colspan="2"><div align="right"><i><em>*</em> = @Html.Lang("Required")</i></div></td></tr>
+<tr>
+  <td width="150"><b>@Html.Lang("Username"): </b></td>
+  <td>
+    @if (Model.IsEdit) { <b>@Model.Uid</b> }
+    else { <input type="text" name="uid" size="30" /><em>*</em> }
+  </td>
+</tr>
+<tr><td width="150"><b>@Html.Lang("FirstName"): </b></td><td><input type="text" name="firstname" size="30" value="@Model.Firstname" /><em>*</em></td></tr>
+<tr><td width="150"><b>@Html.Lang("LastName"): </b></td><td><input type="text" name="lastname" size="30" value="@Model.Lastname" /><em>*</em></td></tr>
+<tr><td width="150"><b>@Html.Lang("EmailAddress"): </b></td><td><input type="text" name="email" size="30" value="@Model.Email" /><em>*</em></td></tr>
+@if (Model.ShowPager)
+{
+  <tr><td width="150"><b>@Html.Lang("PagerAddress"): </b></td><td><input type="text" name="pager" size="30" value="@Model.Pager" /></td></tr>
+}
+else
+{
+  <input type="hidden" name="pager" value="" />
+}
+<tr><td width="150"><b>@Html.Lang("PhoneNumber"): </b></td><td><input type="text" name="phone" size="30" value="@Model.Phone" /></td></tr>
+@if (Model.UseInout)
+{
+  <tr><td width="150"><b>@Html.Lang("HomePhone"): </b></td><td><input type="text" name="phone_home" size="30" value="@Model.PhoneHome" /></td></tr>
+  <tr><td width="150"><b>@Html.Lang("MobilePhone"): </b></td><td><input type="text" name="phone_mobile" size="30" value="@Model.PhoneMobile" /></td></tr>
+}
+else
+{
+  <input type="hidden" name="phone_home" value="" />
+  <input type="hidden" name="phone_mobile" value="" />
+}
+<tr><td width="150"><b>@Html.Lang("Location"): </b></td><td><input type="text" name="location" size="30" value="@Model.Location" /></td></tr>
+<tr>
+  <td width="150"><b>@Html.Lang("Department"): </b></td>
+  <td>
+    <select name="department">
+      @if (Model.Department == 0) { <option value="0" selected>@Html.Lang("NotSpecified")</option> } else { <option value="0">@Html.Lang("NotSpecified")</option> }
+      @foreach (var d in Model.Departments) { if (d.Id == Model.Department) { <option value="@d.Id" selected>@d.Name</option> } else { <option value="@d.Id">@d.Name</option> } }
+    </select>
+  </td>
+</tr>
+<tr>
+  <td width="150"><b>@Html.Lang("Language"): </b></td>
+  <td>
+    <select name="usrLanguage">
+      @foreach (var l in Model.Languages) { if (l.Id == Model.UsrLanguage) { <option value="@l.Id" selected>@l.Name (@l.Localized)</option> } else { <option value="@l.Id">@l.Name (@l.Localized)</option> } }
+    </select>
+  </td>
+</tr>
+<tr class="Head2"><td colspan="2">@Html.Lang("SupportRep"):</td></tr>
+<tr>
+  <td><b>@Html.Lang("Enable"):</b></td>
+  <td>@if (Model.IsRep) { <input type="checkbox" name="isrep" checked /> } else { <input type="checkbox" name="isrep" /> }</td>
+</tr>
+<tr>
+  <td><b>@Html.Lang("AccessLevel"):</b></td>
+  <td>
+    <select name="repaccess">
+      @if (Model.RepAccess == 0) { <option value="0" selected>@Html.Lang("Normal")</option> } else { <option value="0">@Html.Lang("Normal")</option> }
+      @if (Model.RepAccess == 1) { <option value="1" selected>@Html.Lang("Restricted")</option> } else { <option value="1">@Html.Lang("Restricted")</option> }
+      @if (Model.RepAccess == 2) { <option value="2" selected>@Html.Lang("ReadOnly")</option> } else { <option value="2">@Html.Lang("ReadOnly")</option> }
+    </select>
+  </td>
+</tr>
+@if (Model.UseInout)
+{
+  <tr class="Head2"><td colspan="2">@Html.Lang("InOutBoard"):</td></tr>
+  <tr>
+    <td width="150"><b>@Html.Lang("Status"): </b></td>
+    <td>
+      <select name="statuscode">
+        @if (Model.Statuscode == 0) { <option value="0" selected>@Html.Lang("In")</option> } else { <option value="0">@Html.Lang("In")</option> }
+        @if (Model.Statuscode == 1) { <option value="1" selected>@Html.Lang("Out")</option> } else { <option value="1">@Html.Lang("Out")</option> }
+        @if (Model.Statuscode == 2) { <option value="2" selected>@Html.Lang("Leave")</option> } else { <option value="2">@Html.Lang("Leave")</option> }
+      </select>
+    </td>
+  </tr>
+  <tr><td width="150"><b>@Html.Lang("Status")&nbsp;@Html.Lang("text"): </b></td><td><input type="text" name="statustext" size="30" value="@Model.Statustext" /></td></tr>
+  <tr valign="top"><td width="150"><b>@Html.Lang("JobFunction"): </b></td><td><textarea name="jobfunction" rows="4" cols="30">@Model.Jobfunction</textarea></td></tr>
+  <tr valign="top"><td width="150"><b>@Html.Lang("Resume"): </b></td><td><textarea name="userresume" rows="4" cols="30">@Model.Userresume</textarea></td></tr>
+  <tr>
+    <td width="150"><b>@Html.Lang("ListonBoard"): </b></td>
+    <td>
+      <select name="listoninoutboard">
+        @if (Model.ListOnInoutBoard == 0) { <option value="0" selected>@Html.Lang("NO")</option> } else { <option value="0">@Html.Lang("NO")</option> }
+        @if (Model.ListOnInoutBoard != 0) { <option value="1" selected>@Html.Lang("YES")</option> } else { <option value="1">@Html.Lang("YES")</option> }
+      </select>
+    </td>
+  </tr>
+  <tr>
+    <td><b>@Html.Lang("Administrator"):</b></td>
+    <td>@if (Model.InoutAdmin) { <input type="checkbox" name="inoutadmin" checked /> } else { <input type="checkbox" name="inoutadmin" /> }</td>
+  </tr>
+}
+else
+{
+  <input type="hidden" name="statuscode" value="0" />
+  <input type="hidden" name="listoninoutboard" value="0" />
+  <input type="hidden" name="statustext" value="" />
+  <input type="hidden" name="jobfunction" value="" />
+  <input type="hidden" name="userresume" value="" />
+  <input type="hidden" name="inoutadmin" value="0" />
+}
+<tr class="Head2"><td colspan="2">@Html.Lang("Password"):</td></tr>
+@* adduser.asp marks New Password required (*); moduser.asp does not (blank = keep current). *@
+<tr><td width="150"><b>@Html.Lang("NewPassword"): </b></td><td><input type="password" name="newpassword" size="30" />@if (!Model.IsEdit) { <em>*</em> }</td></tr>

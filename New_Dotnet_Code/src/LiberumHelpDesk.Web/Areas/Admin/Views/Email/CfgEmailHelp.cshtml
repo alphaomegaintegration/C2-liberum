@@ -1,0 +1,50 @@
+@* Port of admin/cfgemail_help.asp — popup listing the email template variables. *@
+<div align="center">
+  <table class="Normal">
+    <tr class="Head1">
+      <td colspan="2">@Html.Lang("MessageConfigurationHelp")</td>
+    </tr>
+    <tr class="Body1">
+      <td colspan="2">
+        @Html.Lang("MessageConfigurationHelpText")
+        <p>
+          @Html.Lang("ProblemID"): <b>[problemid]</b><br />
+          @Html.Lang("Title"): <b>[title]</b>
+        </p><br />
+      </td>
+    </tr>
+    <tr class="Body1">
+      <td><b>@Html.Lang("Variable")</b></td>
+      <td><b>@Html.Lang("Definition")</b></td>
+    </tr>
+    <tr class="Body1"><td>problemid</td><td>@Html.Lang("problemidHelp")</td></tr>
+    <tr class="Body1"><td>title</td><td>@Html.Lang("titleHelp")</td></tr>
+    <tr class="Body1"><td>category</td><td>@Html.Lang("categoryHelp")</td></tr>
+    <tr class="Body1"><td>status</td><td>@Html.Lang("statusHelp")</td></tr>
+    <tr class="Body1"><td>priority</td><td>@Html.Lang("priorityHelp")</td></tr>
+    <tr class="Body1"><td>startdate</td><td>@Html.Lang("startdateHelp")</td></tr>
+    <tr class="Body1"><td>closedate</td><td>@Html.Lang("closedateHelp")</td></tr>
+    <tr class="Body1"><td>department</td><td>@Html.Lang("departmentHelp")</td></tr>
+    <tr class="Body1"><td>description</td><td>@Html.Lang("descriptionHelp")</td></tr>
+    <tr class="Body1"><td>notes</td><td>@Html.Lang("notesHelp")</td></tr>
+    <tr class="Body1"><td>solution</td><td>@Html.Lang("solutionHelp")</td></tr>
+    <tr class="Body1"><td>uid</td><td>@Html.Lang("uidHelp")</td></tr>
+    <tr class="Body1"><td>ufname</td><td>@Html.Lang("ufnameHelp")</td></tr>
+    <tr class="Body1"><td>uemail</td><td>@Html.Lang("uemailHelp")</td></tr>
+    <tr class="Body1"><td>phone</td><td>@Html.Lang("phoneHelp")</td></tr>
+    <tr class="Body1"><td>location</td><td>@Html.Lang("locationHelp")</td></tr>
+    <tr class="Body1"><td>uurl</td><td>@Html.Lang("uurlHelp")</td></tr>
+    <tr class="Body1"><td>rid</td><td>@Html.Lang("ridHelp")</td></tr>
+    <tr class="Body1"><td>rfname</td><td>@Html.Lang("rfnameHelp")</td></tr>
+    <tr class="Body1"><td>remail</td><td>@Html.Lang("remailHelp")</td></tr>
+    <tr class="Body1"><td>rurl</td><td>@Html.Lang("rurlHelp")</td></tr>
+    <tr class="Body1"><td>baseurl</td><td>@Html.Lang("baseurlHelp")</td></tr>
+    <tr class="Body1"><td>u_title</td><td>URL Encoded version of the title.</td></tr>
+    <tr class="Body1"><td>u_rfname</td><td>URL Encoded version of the support representative's full name.</td></tr>
+  </table>
+  <p>
+  <form>
+    <input type="button" value="@Loc.Lang("CloseThisWindow")" onclick="javascript:window.close();" />
+  </form>
+</div>
+@Html.Raw(Chrome.Footer())

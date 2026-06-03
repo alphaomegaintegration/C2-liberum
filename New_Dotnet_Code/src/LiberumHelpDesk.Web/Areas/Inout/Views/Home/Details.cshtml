@@ -1,0 +1,54 @@
+@model InoutDetailsVm
+@{
+    var siteName = (ViewData["SiteName"] as string) ?? "";
+    var img = Model.HasImage ? $"/image/{Model.Uid}.jpg" : "/image/nopicture.gif";
+}
+@* Port of inout/details.asp *@
+<div align="center">
+  <table class="normal">
+    <tr class="Head1"><td>@siteName<br />@Html.Lang("UserDetails")</td></tr>
+  </table>
+  <table class="Inout">
+    <tr class="body1">
+      <td>@Html.Lang("Fullname")<br /></td>
+      <td><b>@Model.Uname</b><br /></td>
+      <td rowspan="8" valign="top" align="right"><img src="@img" width="140" height="170" alt="@Model.Uname" border="0" /></td>
+    </tr>
+    <tr class="body1"><td>@Html.Lang("Department")</td><td><b>@Model.Dname</b></td></tr>
+    <tr class="body1"><td>@Html.Lang("UserName")</td><td><b>@Model.Uid</b></td></tr>
+    <tr class="body1"><td>@Html.Lang("Email")</td><td><b>@Model.Email1</b></td></tr>
+    <tr class="body1"><td>@Html.Lang("Phone")</td><td><b>@Model.Phone</b></td></tr>
+    <tr class="body1"><td>@Html.Lang("HomePhone")</td><td><b>@Model.PhoneHome</b></td></tr>
+    <tr class="body1"><td>@Html.Lang("MobilePhone")</td><td><b>@Model.PhoneMobile</b></td></tr>
+    <tr class="body1">
+      <td valign="top">@Html.Lang("Status")</td>
+      @if (Model.StatusCode == 2)
+      {
+        <td><img src="/image/yellow_pin.gif" border="0" />&nbsp;@Model.StatusText</td>
+      }
+      else if (Model.StatusCode == 1)
+      {
+        <td><img src="/image/red_pin.gif" border="0" />&nbsp;@Model.StatusText</td>
+      }
+      else
+      {
+        <td><img src="/image/green_pin.gif" border="0" /></td>
+      }
+    </tr>
+    <tr class="body1"><td valign="top">@Html.Lang("Function")</td><td colspan="2">@Model.Jobfunction</td></tr>
+    <tr class="body1"><td valign="top">@Html.Lang("Resume")</td><td colspan="2">@Model.Userresume</td></tr>
+    <tr class="body1">
+      <td align="right" colspan="3">
+        @if (Model.CanEdit)
+        {
+          <a href="/Inout/Update?id=@Model.Usid">@Html.Lang("Edit")</a><text> | </text>
+        }
+        @if (Model.CanChangeStatus)
+        {
+          <a href="/Inout/Status?id=@Model.Usid">@Html.Lang("ChangeStatus")</a>
+        }
+      </td>
+    </tr>
+  </table>
+</div>
+@Html.Raw(Chrome.Footer())

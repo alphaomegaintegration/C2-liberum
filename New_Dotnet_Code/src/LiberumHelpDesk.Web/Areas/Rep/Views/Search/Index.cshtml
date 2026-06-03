@@ -1,0 +1,115 @@
+@model RepSearchVm
+@* Port of rep/search.asp (form wraps the table for valid markup) *@
+<div align="center">
+  <form method="post" action="/Rep/Results">
+    <table class="Normal">
+      <tr class="Head1"><td>@Html.Lang("ProblemSearch")</td></tr>
+      <tr class="Head2"><td>@Html.Lang("ProblemSpecifications"):</td></tr>
+      <tr class="Body1">
+        <td>
+          <table class="Normal">
+            <tr class="body1"><td><b>@Html.Lang("ReportedBy"):</b></td><td><input type="text" name="uid" size="30" /></td></tr>
+            <tr class="body1"><td><b>@Html.Lang("ProblemID"):</b></td><td><input type="text" name="id" size="30" /></td></tr>
+            <tr class="body1">
+              <td><b>@Html.Lang("AssignedTo"):</b></td>
+              <td>
+                <select name="rep">
+                  <option value="0">@Html.Lang("Any")</option>
+                  @foreach (var r in Model.Reps) { <option value="@r.Id">@r.Name</option> }
+                </select>
+              </td>
+            </tr>
+            <tr class="body1">
+              <td><b>@Html.Lang("Category"):</b></td>
+              <td>
+                <select name="category">
+                  <option value="0">@Html.Lang("Any")</option>
+                  @foreach (var c in Model.Categories) { <option value="@c.Id">@c.Name</option> }
+                </select>
+              </td>
+            </tr>
+            <tr class="body1">
+              <td><b>@Html.Lang("Department"):</b></td>
+              <td>
+                <select name="department">
+                  <option value="0">@Html.Lang("Any")</option>
+                  @foreach (var d in Model.Departments) { <option value="@d.Id">@d.Name</option> }
+                </select>
+              </td>
+            </tr>
+            <tr class="body1">
+              <td><b>@Html.Lang("Status"):</b></td>
+              <td>
+                <select name="status" width="30">
+                  <option value="0">@Html.Lang("Any")</option>
+                  <option value="-1">@Html.Lang("AllNonClosed")</option>
+                  @foreach (var s in Model.Statuses) { <option value="@s.Id">@s.Name</option> }
+                </select>
+              </td>
+            </tr>
+            <tr class="body1">
+              <td><b>@Html.Lang("Priority"):</b></td>
+              <td>
+                <select name="priority">
+                  <option value="0">@Html.Lang("Any")</option>
+                  @foreach (var pr in Model.Priorities) { <option value="@pr.Id">@pr.Name</option> }
+                </select>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr class="Head2"><td>@Html.Lang("Contains"):</td></tr>
+      <tr class="Body1">
+        <td>
+          <table class="Normal">
+            <tr>
+              <td width="100"><b>@Html.Lang("Keywords"):</b></td>
+              <td><input type="text" size="50" name="keywords" /></td>
+            </tr>
+            <tr>
+              <td valign="top"><b>@Html.Lang("SearchFields"):</b></td>
+              <td>
+                <input type="checkbox" name="title" checked /> @Html.Lang("Title")<br />
+                <input type="checkbox" name="description" checked /> @Html.Lang("Description")<br />
+                <input type="checkbox" name="solution" checked /> @Html.Lang("Solution")<br />
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr class="Head2"><td>@Html.Lang("OrderedBy"):</td></tr>
+      <tr class="Body1">
+        <td>
+          <input type="radio" name="order" value="1" checked /> @Html.Lang("ProblemID")
+          <input type="radio" name="order" value="2" /> @Html.Lang("UserName")
+          <input type="radio" name="order" value="3" /> @Html.Lang("RepUserName")
+          <input type="radio" name="order" value="4" /> @Html.Lang("Status")
+        </td>
+      </tr>
+      <tr class="Head2"><td>@Html.Lang("Dates"):</td></tr>
+      <tr class="Body1">
+        <td>
+          <table class="normal">
+            <tr class="body1">
+              <td>
+                @Html.Lang("From")&nbsp;
+                <select name="s_month" size="1">@for (var c = 1; c <= 12; c++) { if (c == Model.SMonth) { <option value="@c" selected>@c</option> } else { <option value="@c">@c</option> } }</select> /
+                <select name="s_day" size="1">@for (var c = 1; c <= 31; c++) { if (c == Model.SDay) { <option value="@c" selected>@c</option> } else { <option value="@c">@c</option> } }</select> /
+                <select name="s_year" size="1">@for (var c = 2000; c <= Model.CurrentYear; c++) { if (c == Model.SYear) { <option value="@c" selected>@c</option> } else { <option value="@c">@c</option> } }</select>
+              </td>
+              <td>
+                @Html.Lang("through")&nbsp;
+                <select name="e_month" size="1">@for (var c = 1; c <= 12; c++) { if (c == Model.EMonth) { <option value="@c" selected>@c</option> } else { <option value="@c">@c</option> } }</select> /
+                <select name="e_day" size="1">@for (var c = 1; c <= 31; c++) { if (c == Model.EDay) { <option value="@c" selected>@c</option> } else { <option value="@c">@c</option> } }</select> /
+                <select name="e_year" size="1">@for (var c = 2000; c <= Model.CurrentYear; c++) { if (c == Model.EYear) { <option value="@c" selected>@c</option> } else { <option value="@c">@c</option> } }</select>
+              </td>
+            </tr>
+          </table>
+          <center><br /><input type="submit" value="@Loc.Lang("Search")" /></center>
+        </td>
+      </tr>
+    </table>
+  </form>
+</div>
+@Html.Raw(Chrome.Footer())

@@ -1,0 +1,46 @@
+@model ViewReportsVm
+@* Port of admin/viewreports.asp *@
+<div align="center">
+  <table class="Normal">
+    <tr class="Head1"><td colspan="6">@Html.Lang("Reports")</td></tr>
+    <tr class="Head2" align="center">
+      <td>@Html.Lang(Model.GroupHeaderKey)</td>
+      <td>@Html.Lang("Total")</td>
+      <td>@Html.Lang("Time")</td>
+      <td>@Html.Lang("AvgTime")</td>
+      <td>@Html.Lang("PofProblems")</td>
+      <td>@Html.Lang("PofTime")</td>
+    </tr>
+    @if (Model.Rows.Count > 0)
+    {
+      foreach (var r in Model.Rows)
+      {
+        <tr class="Body1" align="center">
+          <td>@r.Name</td>
+          <td>@r.Total</td>
+          <td>@r.TotalTime</td>
+          <td>@r.AvgTime.ToString("N1")</td>
+          <td>@r.PctProblems.ToString("N1")%</td>
+          <td>@r.PctTime.ToString("N1")%</td>
+        </tr>
+      }
+      <tr class="Head2" align="center">
+        <td>@Html.Lang("Totals")</td>
+        <td>@Model.Total</td>
+        <td>@Model.TotalTime</td>
+        <td>@Model.TotalAvg.ToString("N1")</td>
+        <td>100%</td>
+        <td>100%</td>
+      </tr>
+    }
+    else
+    {
+      <tr class="Body1"><td colspan="6" align="center"><b>@Html.Lang("Noresultsfound")</b></td></tr>
+    }
+  </table>
+  <p>
+    <a href="/Admin">@Html.Lang("AdministrativeMenu")</a><br />
+    <a href="/Admin/Reports">@Html.Lang("ReportsMenu")</a>
+  </p>
+</div>
+@Html.Raw(Chrome.Footer())

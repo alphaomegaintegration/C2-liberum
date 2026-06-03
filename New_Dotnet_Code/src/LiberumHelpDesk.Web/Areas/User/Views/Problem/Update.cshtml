@@ -1,0 +1,15 @@
+@{ var id = (int)(ViewData["Id"] ?? 0); }
+@* Port of user/update.asp confirmation *@
+<div align="center">
+  <table class="Normal">
+    <tr class="Head1"><td colspan="2">@Html.Lang("Problem")&nbsp;@id&nbsp;@Html.Lang("isUpdated")</td></tr>
+    <tr class="Body1">
+      <td>
+        <div align="center">
+          @Html.Lang("Viewthedetailsof") <a href="/User/Problem/Details?id=@id">@Html.Lang("Problem")&nbsp;@id</a>.
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+@Html.Raw(Chrome.Footer())

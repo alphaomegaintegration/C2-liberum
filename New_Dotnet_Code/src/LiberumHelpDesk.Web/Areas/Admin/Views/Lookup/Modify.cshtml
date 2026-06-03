@@ -1,0 +1,54 @@
+@model ModifyVm
+@functions {
+    static string BackRoute(int m) => m switch { 2 => "/Admin/ViewCat", 3 => "/Admin/ViewDep", 4 => "/Admin/ViewPri", 5 => "/Admin/ViewStatus", 6 => "/Admin/ViewLang", _ => "/Admin" };
+    // modify.asp back-link label switches per mtype (Categories/Departments/Priorities/Statuses/Languages).
+    static string BackLabelKey(int m) => m switch { 1 => "SupportReps", 2 => "Categories", 3 => "Departments", 4 => "Priorities", 5 => "Statuses", 6 => "Languages", _ => "Categories" };
+}
+@* Port of admin/modify.asp *@
+<form method="post" action="/Admin/PostMods" id="form1" name="form1">
+  <input type="hidden" name="data_id" value="@Model.DataId" />
+  <input type="hidden" name="numdatafields" value="@Model.NumDataFields" />
+  <input type="hidden" name="mtype" value="@Model.Mtype" />
+  <input type="hidden" name="mLanguage" value="@Model.MLanguage" />
+  <input type="hidden" name="mLangID" value="@Model.MLangID" />
+  <div align="center">
+    <table class="Normal">
+      <tr class="Head1"><td>@Html.Lang("CreateModify")&nbsp;@Model.Title</td></tr>
+      <tr class="Body1">
+        <td>
+          @if (Model.NumDataFields >= 1)
+          {
+            <text>@Model.Data1Name: <input type="text" size="25" name="data1" value="@Model.Data1" /><p></p></text>
+          }
+          @if (Model.NumDataFields >= 2)
+          {
+            <text>@Model.Data2Name: </text>
+            if (Model.CategoryRepDropdown)
+            {
+              <select name="data2">
+                @foreach (var r in Model.Reps) { if (r.Id == Model.SelectedRep) { <option value="@r.Id" selected>@r.Name</option> } else { <option value="@r.Id">@r.Name</option> } }
+              </select>
+            }
+            else
+            {
+              <input type="text" size="25" name="data2" value="@Model.Data2" />
+            }
+            <p></p>
+          }
+          <div align="center">
+            <input type="submit" value="@Loc.Lang("CreateModify")" /><br />
+            @if (Model.ShowNumberNote)
+            {
+              <font size="-1"><i>(@Html.Lang("StatusandPrioritynumberscannotbechanged"))</i></font>
+            }
+          </div>
+        </td>
+      </tr>
+    </table>
+    <p>
+      <a href="@BackRoute(Model.Mtype)">@Html.Lang("Manage")&nbsp;@Html.Lang(BackLabelKey(Model.Mtype))</a><br />
+      <a href="/Admin">@Html.Lang("AdministrativeMenu")</a>
+    </p>
+  </div>
+</form>
+@Html.Raw(Chrome.Footer())

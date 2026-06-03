@@ -1,0 +1,55 @@
+@model ViewLangStringVm
+@* Port of admin/viewlangstring.asp *@
+<div align="center">
+  <form action="/Admin/ViewLangString?lang_id=@Model.LangId" method="POST" name="change">
+    <input type="hidden" name="frm_save" value="1" />
+    <table class="Wide">
+      <tr class="Head1"><td colspan="3">@Html.Lang("LanguageStrings")</td></tr>
+      @if (Model.SaveSuccess)
+      {
+        <tr class="Head2"><td colspan="3"><div align="center">@Html.Lang("ChangesSaved")</div></td></tr>
+      }
+      @if (Model.AddSuccess)
+      {
+        <tr class="Head2"><td colspan="3"><div align="center">@Html.Lang("StringAdded")</div></td></tr>
+      }
+      <tr class="Head2">
+        <td><div align="center">@Html.Lang("Variable")</div></td>
+        <td><div align="center">@Model.DefaultLangLabel</div></td>
+        <td><div align="center">@Model.CurrentLangLabel</div></td>
+      </tr>
+      @foreach (var r in Model.Rows)
+      {
+        <tr class="Body1">
+          <td align="center">@r.Variable</td>
+          <td align="center">@Html.Raw(r.EnglishText)</td>
+          <td align="center"><input type="text" size="30" name="@r.Variable" value="@r.CurrentText" /></td>
+        </tr>
+      }
+      <tr class="Head2"><td colspan="3"><div align="center"><input type="submit" value="@Loc.Lang("Save")" /></div></td></tr>
+    </table>
+  </form>
+  <p></p>
+  <form action="/Admin/ViewLangString?lang_id=@Model.LangId" method="POST" name="add">
+    <input type="hidden" name="frm_add" value="1" />
+    <table class="Wide">
+      <tr class="Head1"><td colspan="3">@Html.Lang("AddLanguageString")</td></tr>
+      <tr class="Head2">
+        <td><div align="center">@Html.Lang("Variable")</div></td>
+        <td><div align="center">@Model.DefaultLangLabel</div></td>
+        <td><div align="center">@Model.CurrentLangLabel</div></td>
+      </tr>
+      <tr class="Body1">
+        <td align="center"><input type="text" size="20" name="varname" /></td>
+        <td align="center"><input type="hidden" name="string1_id" value="1" /><input type="text" size="30" name="string1_value" /></td>
+        <td align="center"><input type="hidden" name="string2_id" value="@Model.LangId" /><input type="text" size="30" name="string2_value" /></td>
+      </tr>
+      <tr class="Head2"><td colspan="3"><div align="center"><input type="submit" value="@Loc.Lang("AddNew")" /></div></td></tr>
+    </table>
+  </form>
+  <p>
+    <a href="/Admin/ViewLang">@Html.Lang("Manage")&nbsp;@Html.Lang("Languages")</a><br />
+    <a href="/Admin">@Html.Lang("AdministrativeMenu")</a>
+  </p>
+</div>
+@Html.Raw(Chrome.Footer())

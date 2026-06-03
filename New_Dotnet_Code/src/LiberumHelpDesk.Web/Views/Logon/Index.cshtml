@@ -1,0 +1,55 @@
+@model LogonViewModel
+@* Port of logon.asp form *@
+<div align="center">
+  <table Class="Narrow">
+    <tr class="Head1">
+      <td>
+        @Model.SiteName
+        <br />
+        @Html.Lang("HelpDesk")
+      </td>
+    </tr>
+    <tr class="Body1">
+      <td>
+        <form action="/Logon?URL=@Model.FrmUrl" method="POST">
+          <input type="hidden" name="logon" value="1" />
+          <div align="center">
+            <u><h3>@Html.Lang("Logon")</h3></u>
+          </div>
+          @if (Model.Invalid)
+          {
+            <div align="center"><i>@Html.Lang("Invalidusernameorpassword").</i></div>
+          }
+          <table class="Narrow" border="0">
+            <tr>
+              <td><b>@Html.Lang("UserName"):</b></td>
+              <td><input type="text" name="uid" size="20" /></td>
+            </tr>
+            <tr>
+              <td><b>@Html.Lang("Password"):</b></td>
+              <td><input type="password" name="password" size="20" /></td>
+            </tr>
+            <tr><td>&nbsp;</td></tr>
+          </table>
+          <div align="center">
+            <input type="submit" value="@Loc.Lang("Logon")" />
+          </div>
+        </form>
+        <p></p>
+        <div align="center">
+          @if (Model.EnableKB == 3)
+          {
+            <a href="/Kb">@Html.Lang("SearchtheKnowledgeBase")</a>
+            <p></p>
+          }
+          <a href="/Register">@Html.Lang("NewUser")</a>
+          @if (Model.EmailType != 0)
+          {
+            @Html.Raw("| <a href=\"/ForgotPass\">")@Html.Lang("EmailMyPassword")@Html.Raw("</a>")
+          }
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+@Html.Raw(Chrome.Footer())

@@ -1,0 +1,26 @@
+@model InoutStatusVm
+@{
+    var siteName = (ViewData["SiteName"] as string) ?? "";
+    string check = Model.Checked ? "checked" : "";
+}
+@* Port of inout/status.asp *@
+<div align="center">
+  <table class="normal">
+    <tr class="Head1"><td>@siteName<br />@Html.Lang("StatusInformation")</td></tr>
+  </table>
+  <table class="inout">
+    <form method="POST" action="/Inout/Status?id=@Model.Usid">
+      <input type="hidden" name="save" value="1" />
+      @if (Model.Saved)
+      {
+        <tr class="head2"><td colspan="2"><div align="center">@Html.Lang("Status") @Html.Lang("isupdated")</div></td></tr>
+      }
+      <tr class="body1"><td>@Html.Lang("Fullname")<br /></td><td><b>@Model.Uname</b></td></tr>
+      <tr class="body1"><td>@Html.Lang("Out")</td><td><input type="checkbox" name="frm_status" @check /></td></tr>
+      <tr class="body1"><td valign="top">@Html.Lang("Text")</td><td><textarea name="frm_statustext" rows="4" cols="47">@Model.StatusText</textarea></td></tr>
+      <tr class="body1"><td align="center" colspan="2"><input type="submit" value="@Loc.Lang("Submit")" /></td></tr>
+      <tr class="body1"><td align="right" colspan="2"><a href="/Inout/Details?id=@Model.Usid">@Html.Lang("Details")</a></td></tr>
+    </form>
+  </table>
+</div>
+@Html.Raw(Chrome.Footer())

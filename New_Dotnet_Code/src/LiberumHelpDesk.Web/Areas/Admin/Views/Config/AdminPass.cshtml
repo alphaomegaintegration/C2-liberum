@@ -1,0 +1,29 @@
+@{
+    var posted = (bool)(ViewData["Posted"] ?? false);
+    var message = (ViewData["Message"] as string) ?? "";
+}
+@* Port of admin/adminpass.asp *@
+<div align="center">
+  <form method="post" action="/Admin/AdminPass">
+    <input type="hidden" name="save" value="1" />
+    <table class="Normal">
+      <tr class="Head1"><td>@Html.Lang("ChangeAdminPassword")</td></tr>
+      @if (posted)
+      {
+        <tr class="Head2"><td><div align="center">@Html.Raw(message)</div></td></tr>
+      }
+      <tr class="Body1">
+        <td>
+          <table class="Normal">
+            <tr><td width="120"><b>@Html.Lang("CurrentPassword"):</b></td><td><input type="password" size="30" name="CurrPass" /></td></tr>
+            <tr><td width="120"><b>@Html.Lang("NewPassword"):</b></td><td><input type="password" size="30" name="AdminPass1" /></td></tr>
+            <tr><td width="120"><b>@Html.Lang("ConfirmPassword"):</b></td><td><input type="password" size="30" name="AdminPass2" /></td></tr>
+          </table>
+          <div align="center"><input type="submit" value="@Loc.Lang("Save")" /></div>
+        </td>
+      </tr>
+    </table>
+  </form>
+  <p><a href="/Admin">@Html.Lang("AdministrativeMenu")</a></p>
+</div>
+@Html.Raw(Chrome.Footer())

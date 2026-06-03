@@ -1,0 +1,36 @@
+@model LookupListVm
+@* Port of admin/viewcat/viewdep/viewpri/viewstatus list pages *@
+<div align="center">
+  <table class="Normal">
+    <tr class="Head1"><td colspan="@Model.Headers.Count">@Model.Heading</td></tr>
+    <tr class="Head2">
+      @foreach (var h in Model.Headers) { <td><div align="center">@h</div></td> }
+    </tr>
+    @foreach (var row in Model.Rows)
+    {
+      <tr class="Body1">
+        @for (var i = 0; i < row.Cells.Count; i++)
+        {
+          @* viewstatus.asp lines 74-76 emit <%=status_id%> then the marker via an adjacent <% If %> tag, so the
+             whitespace between them is consumed by the ASP <% %> whitespace quirk → tight "100*". A Razor markup
+             block ("{ <em>*</em> }") would emit the leading space ("100 *"), so render the marker via Html.Raw with
+             no intervening whitespace to match the oracle exactly. *@
+          <td align="center">@row.Cells[i]@Html.Raw(i == 0 && row.Marked ? "<em>*</em>" : "")</td>
+        }
+        <td align="center">
+          <a href="/Admin/Modify?mtype=@Model.Mtype&id=@row.Id">@Html.Lang("Edit")</a>
+          &nbsp;|&nbsp; <a href="/Admin/ConfDelete?mtype=@Model.Mtype&id=@row.Id">@Html.Lang("Delete")</a>
+        </td>
+      </tr>
+    }
+  </table>
+  @if (Model.Footnote != null)
+  {
+    <i><em>*</em>@(Model.Footnote).</i>
+  }
+  <p>
+    <form method="post" action="/Admin/Modify?mtype=@Model.Mtype"><input type="submit" value="@Model.AddLabel" /></form>
+  </p>
+  <p><a href="/Admin">@Html.Lang("AdministrativeMenu")</a></p>
+</div>
+@Html.Raw(Chrome.Footer())

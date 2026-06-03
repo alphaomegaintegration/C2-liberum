@@ -1,0 +1,47 @@
+@{
+    var siteName = (ViewData["SiteName"] as string) ?? "";
+    var enableKb = (int)(ViewData["EnableKB"] ?? 0);
+    var useInout = (int)(ViewData["UseInoutBoard"] ?? 0);
+}
+@* Port of user/default.asp (user main menu) *@
+@Html.Raw(Chrome.Header())
+<div align="center">
+  <table class="Normal">
+    <tr class="Head1"><td>@siteName</td></tr>
+    <tr class="Head2"><td><div align="center">@Html.Lang("HelpDesk")</div></td></tr>
+    <tr class="Body1"><td><div align="center"><b><a href="/User/Problem/New">@Html.Lang("SubmitNewProblem")</a></b></div></td></tr>
+    <tr class="Body1"><td><div align="center"><a href="/User/Problem/View">@Html.Lang("ViewProblemList")</a></div></td></tr>
+    <tr class="Body1">
+      <td valign="center">
+        <div align="center">
+          <br />
+          <form method="POST" action="/User/Problem/Details">
+            <input type="text" size="6" name="id" /> <input type="submit" value="@Loc.Lang("OpenspecificID")" />
+          </form>
+        </div>
+      </td>
+    </tr>
+    @if (enableKb >= 2)
+    {
+      <tr class="Head2"><td><div align="center">@Html.Lang("KnowledgeBase")</div></td></tr>
+      <tr class="Body1"><td><div align="center"><a href="/Kb">@Html.Lang("SearchtheKnowledgeBase")</a></div></td></tr>
+      <tr class="Body1">
+        <td valign="center">
+          <div align="center">
+            <br />
+            <form method="POST" action="/Kb/Details">
+              <input type="text" size="6" name="id" /> <input type="submit" value="@Loc.Lang("LookupbyID")" />
+            </form>
+          </div>
+        </td>
+      </tr>
+    }
+    <tr class="Head2"><td><div align="center">@Html.Lang("Other")</div></td></tr>
+    @if (useInout == 1)
+    {
+      <tr class="Body1"><td align="center"><a href="/Inout">@Html.Lang("InOutBoard")</a></td></tr>
+    }
+    <tr class="Body1"><td><div align="center"><a href="/Register?edit=1">@Html.Lang("EditInformation")</a></div></td></tr>
+  </table>
+</div>
+@Html.Raw(Chrome.Footer())

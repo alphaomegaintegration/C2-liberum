@@ -1,0 +1,18 @@
+@{
+    var siteName = (ViewData["SiteName"] as string) ?? "";
+    var message = (ViewData["Message"] as string) ?? "";
+    var usid = (int)(ViewData["Usid"] ?? 0);
+}
+@* Port of inout/savefile.asp (upload result) *@
+<div align="center">
+  <table class="normal">
+    <tr class="Head1"><td>@siteName</td></tr>
+    <tr class="Head2" align="center"><td>@Html.Lang("Uploadimage")</td></tr>
+  </table>
+  <table class="normal">
+    <tr class="body1c"><td>@Html.Raw(message)</td></tr>
+  </table>
+  <br />
+  <a href="/Inout/Details?id=@usid">@Html.Lang("Details")</a>
+</div>
+@Html.Raw(Chrome.Footer())

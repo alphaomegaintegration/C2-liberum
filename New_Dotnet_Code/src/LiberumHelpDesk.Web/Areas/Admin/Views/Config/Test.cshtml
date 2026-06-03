@@ -1,0 +1,15 @@
+@* Port of admin/test.asp — misc test commands (send test email + System Information entry) *@
+@{ var sentTo = (string)(ViewData["SentTo"] ?? ""); }
+<div align="center">
+  <table class="Normal">
+    <tr class="Head1"><td>@Html.Lang("TestConfiguration")</td></tr>
+    @if (sentTo.Length > 0)
+    {
+      <tr class="Head2" align="center"><td>@Html.Lang("Messagesentto") @sentTo</td></tr>
+    }
+    <tr class="body1c"><td><a href="/Admin/SysInfo">@Html.Lang("ShowSystemInformation")</a></td></tr>
+    <tr class="body1c"><td><a href="/Admin/Test?doit=1">@Html.Lang("SendTestEmail")</a></td></tr>
+    <tr class="body2"><td align="right"><a href="/Admin">@Html.Lang("AdministrativeMenu")</a></td></tr>
+  </table>
+</div>
+@Html.Raw(Chrome.Footer())

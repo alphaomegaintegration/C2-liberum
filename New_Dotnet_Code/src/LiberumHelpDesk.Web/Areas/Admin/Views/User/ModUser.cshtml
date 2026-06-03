@@ -1,0 +1,49 @@
+@model UserFormVm
+@* Port of admin/moduser.asp *@
+<div align="center">
+  <table class="Normal">
+    <tr class="Head1"><td>@Html.Lang("UpdateInformation")</td></tr>
+    @if (Model.RepProbsError)
+    {
+      <tr class="Head2"><td><div align="center">@Html.Lang("ErrorUpdatingAccount")</div></td></tr>
+      <tr class="Body1"><td>@Html.Lang("ErrorUpdatingAccountText").</td></tr>
+    }
+    else if (Model.AccountDeleted)
+    {
+      <tr class="Head2"><td><div align="center">@Html.Lang("AccountDeleted")</div></td></tr>
+      <tr class="Body1"><td><div align="center">@Html.Lang("Theaccounthasbeenremoved").</div></td></tr>
+    }
+    else
+    {
+      @if (Model.Success)
+      {
+        <tr class="Head2"><td><div align="center">@Html.Lang("AccountUpdated")</div></td></tr>
+      }
+      <tr class="Body1">
+        <td>
+          <form name="upduser" action="/Admin/ModUser" method="POST">
+            <input type="hidden" name="usersid" value="@Model.ModSid" />
+            <input type="hidden" name="save" value="1" />
+            <table class="Normal">
+              @await Html.PartialAsync("_UserFields", Model)
+            </table>
+            <div align="center"><input type="submit" value="@Loc.Lang("Save")" /></div>
+          </form>
+          <hr width="80%" />
+          <div align="center">
+            <form name="deluser" action="/Admin/ModUser" method="POST">
+              <input type="hidden" name="usersid" value="@Model.ModSid" />
+              <input type="hidden" name="delete" value="1" />
+              <input type="submit" value="@Loc.Lang("DeleteAccount")" />
+            </form>
+          </div>
+        </td>
+      </tr>
+    }
+  </table>
+  <p>
+    <a href="/Admin/ViewUsers">@Html.Lang("ManageUsers")</a><br />
+    <a href="/Admin">@Html.Lang("AdministrativeMenu")</a>
+  </p>
+</div>
+@Html.Raw(Chrome.Footer())

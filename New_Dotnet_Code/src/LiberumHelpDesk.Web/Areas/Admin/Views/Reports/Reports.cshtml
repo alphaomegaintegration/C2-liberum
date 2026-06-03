@@ -1,0 +1,30 @@
+@model ReportsFormVm
+@* Port of admin/reports.asp *@
+<div align="center">
+  <form method="post" action="/Admin/ViewReports">
+    <table class="Normal">
+      <tr class="Head1"><td>@Html.Lang("Reports")</td></tr>
+      <tr class="Body1c">
+        <td>
+          <input type="radio" name="type" value="0" checked /> @Html.Lang("Department")&nbsp;@Html.Lang("Report")<br />
+          <input type="radio" name="type" value="1" /> @Html.Lang("Category")&nbsp;@Html.Lang("Report")<br />
+          <input type="radio" name="type" value="2" /> @Html.Lang("SupportRep")&nbsp;@Html.Lang("Report")<br />
+          <hr width="75%" />
+          @Html.Lang("StartDate"):
+          <select name="s_month" size="1">@for (var c = 1; c <= 12; c++) { if (c == Model.SMonth) { <option value="@c" selected>@c</option> } else { <option value="@c">@c</option> } }</select> /
+          <select name="s_day" size="1">@for (var c = 1; c <= 31; c++) { if (c == Model.SDay) { <option value="@c" selected>@c</option> } else { <option value="@c">@c</option> } }</select> /
+          <select name="s_year" size="1">@for (var c = 2000; c <= Model.CurrentYear; c++) { if (c == Model.SYear) { <option value="@c" selected>@c</option> } else { <option value="@c">@c</option> } }</select>
+          <br />
+          @Html.Lang("EndDate"):
+          <select name="e_month" size="1">@for (var c = 1; c <= 12; c++) { if (c == Model.EMonth) { <option value="@c" selected>@c</option> } else { <option value="@c">@c</option> } }</select> /
+          <select name="e_day" size="1">@for (var c = 1; c <= 31; c++) { if (c == Model.EDay) { <option value="@c" selected>@c</option> } else { <option value="@c">@c</option> } }</select> /
+          <select name="e_year" size="1">@for (var c = 2000; c <= Model.CurrentYear; c++) { if (c == Model.EYear) { <option value="@c" selected>@c</option> } else { <option value="@c">@c</option> } }</select>
+          <br /><br />
+          <center><input type="submit" value="@Loc.Lang("ViewReport")" /></center>
+        </td>
+      </tr>
+    </table>
+  </form>
+  <p><a href="/Admin">@Html.Lang("AdministrativeMenu")</a></p>
+</div>
+@Html.Raw(Chrome.Footer())

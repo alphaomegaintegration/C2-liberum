@@ -1,0 +1,44 @@
+@model PrintProblemVm
+@* Port of user/print.asp (printer-friendly, no footer) *@
+<div align="center">
+  <table class="Wide">
+    <tr class="Head1"><td colspan="2"><b>@Html.Lang("DetailsforProblem")&nbsp;@Model.Id</b></td></tr>
+    <tr class="Body1">
+      <td>
+        <table class="wide">
+          <tr><td width="45%"><b>@Html.Lang("ProblemID"):</b></td><td>@Model.Id</td></tr>
+          <tr><td><b>@Html.Lang("UserName"):</b></td><td>@Model.Uid</td></tr>
+          <tr><td><b>@Html.Lang("EMail"):</b></td><td>@Model.Uemail</td></tr>
+          <tr><td><b>@Html.Lang("Phone"):</b></td><td>@Model.Uphone</td></tr>
+          <tr><td><b>@Html.Lang("Location"):</b></td><td>@Model.Ulocation</td></tr>
+          <tr><td><b>@Html.Lang("Title"):</b></td><td>@Model.Title</td></tr>
+          <tr><td><b>@Html.Lang("StartDate"):</b></td><td>@Model.StartDate</td></tr>
+          @if (Model.IsClosed)
+          {
+            <tr><td><b>@Html.Lang("CloseDate"):</b></td><td>@Model.CloseDate</td></tr>
+          }
+          @* user/print.asp line 164: AssignedTo is a mailto link to the rep. Subject reproduces the ASP whitespace-consumption quirk — "Help Desk: Problem1" (colon-space, but no space before the id, since the literal space between <%=lang("Problem")%> and <%=id%> is dropped). *@
+          <tr><td><b>@Html.Lang("AssignedTo"):</b></td><td><a href="mailto:@(Model.Remail)?Subject=@Loc.Lang("HelpDesk"): @Loc.Lang("Problem")@Model.Id">@Model.Rname</a></td></tr>
+          <tr><td><b>@Html.Lang("Department"):</b></td><td>@Model.Dname</td></tr>
+          <tr><td><b>@Html.Lang("Category"):</b></td><td>@Model.Cname</td></tr>
+          <tr><td><b>@Html.Lang("Status"):</b></td><td>@Model.Sname</td></tr>
+        </table>
+      </td>
+    </tr>
+    <tr class="Head2"><td colspan="2">@Html.Lang("Description"):</td></tr>
+    <tr class="Body1"><td colspan="2">@Html.Raw(Model.DescriptionHtml)</td></tr>
+    <tr class="Head2"><td colspan="2">@Html.Lang("Notes"):</td></tr>
+    <tr class="Body1">
+      <td colspan="2">
+        @if (Model.Notes.Count == 0) { @Html.Lang("NoAvailableNotes") }
+        else { foreach (var n in Model.Notes) { <b>@n.Header</b><br />@Html.Raw(n.NoteHtml)<p></p> } }
+      </td>
+    </tr>
+    @if (Model.IsClosed)
+    {
+      <tr class="Head2"><td colspan="2">@Html.Lang("Solution"):</td></tr>
+      <tr class="Body1"><td colspan="2">@Html.Raw(Model.SolutionHtml)</td></tr>
+    }
+  </table>
+  <form><input type="button" value="@Loc.Lang("CloseThisWindow")" onclick="javascript:window.close();" /></form>
+</div>

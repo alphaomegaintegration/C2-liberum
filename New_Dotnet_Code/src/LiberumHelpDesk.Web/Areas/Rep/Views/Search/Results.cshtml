@@ -1,0 +1,69 @@
+@model RepResultsVm
+@* Port of rep/results.asp *@
+@if (Model.HasResults)
+{
+  <div align="center">
+    <table class="Wide">
+      <tr class="Head1"><td colspan="6">@Html.Lang("SearchResults")</td></tr>
+      <tr class="Head2" align="center">
+        <td nowrap>@Html.Lang("ID")</td>
+        <td>@Html.Lang("Title")</td>
+        <td nowrap>@Html.Lang("UserName")</td>
+        <td nowrap>@Html.Lang("AssignedTo")</td>
+        <td nowrap>@Html.Lang("DateSubmitted")</td>
+        <td nowrap>@Html.Lang("Status")</td>
+      </tr>
+      @foreach (var r in Model.Rows)
+      {
+        <tr class="Body1" align="center">
+          <td nowrap>@r.Id</td>
+          <td><a href="/Rep/Problem/Details?id=@r.Id">@r.Title</a></td>
+          <td nowrap><a href="mailto:@(r.Uemail)?Subject=HELPDESK: Problem @r.Id">@r.Uid</a></td>
+          <td nowrap>@r.Ruid</td>
+          <td nowrap>@r.StartDate</td>
+          <td nowrap>@r.Sname</td>
+        </tr>
+      }
+    </table>
+  </div>
+  <div align="center">
+    @if (Model.ShowPrev)
+    {
+      <form method="POST" action="/Rep/Results">
+        <input type="hidden" name="start" value="@Model.StartP" />
+        <input type="hidden" name="num" value="@Model.Num" />
+        @foreach (var kv in Model.Echo) { <input type="hidden" name="@kv.Key" value="@kv.Value" /> }
+        <input type="submit" value="@Loc.Lang("Previous")" />
+      </form>
+    }
+    @if (Model.ShowNext)
+    {
+      <form method="POST" action="/Rep/Results">
+        <input type="hidden" name="start" value="@Model.StartN" />
+        <input type="hidden" name="num" value="@Model.Num" />
+        @foreach (var kv in Model.Echo) { <input type="hidden" name="@kv.Key" value="@kv.Value" /> }
+        <input type="submit" value="@Loc.Lang("Next")" />
+      </form>
+    }
+    <p><a href="/Rep/Search">@Html.Lang("SearchAgain")</a></p>
+  </div>
+}
+else
+{
+  <div align="center">
+    <table class="Wide">
+      <tr class="Head1"><td colspan="6">@Html.Lang("SearchResults")</td></tr>
+      <tr class="Head2" align="center">
+        <td nowrap>@Html.Lang("ID")</td>
+        <td>@Html.Lang("Title")</td>
+        <td nowrap>@Html.Lang("UserName")</td>
+        <td nowrap>@Html.Lang("AssignedTo")</td>
+        <td nowrap>@Html.Lang("DateSubmitted")</td>
+        <td nowrap>@Html.Lang("Status")</td>
+      </tr>
+      <tr class="Body1"><td colspan="6"><div align="center">@Html.Lang("Noresultsfound").</div></td></tr>
+    </table>
+    <p><a href="/Rep/Search">@Html.Lang("SearchAgain")</a></p>
+  </div>
+}
+@Html.Raw(Chrome.Footer())

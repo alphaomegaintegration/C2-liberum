@@ -1,0 +1,49 @@
+@model ConfDeleteVm
+@functions {
+    static string BackRoute(int m) => m switch { 2 => "/Admin/ViewCat", 3 => "/Admin/ViewDep", 4 => "/Admin/ViewPri", 5 => "/Admin/ViewStatus", 6 => "/Admin/ViewLang", _ => "/Admin" };
+    // confdelete.asp:191-206 back-link route/label switches per mtype (Support Reps/Categories/Departments/Priorities/Statuses/Languages/Language Strings).
+    static string ReturnRoute(int m) => m switch { 1 => "/Admin/ViewRep", 2 => "/Admin/ViewCat", 3 => "/Admin/ViewDep", 4 => "/Admin/ViewPri", 5 => "/Admin/ViewStatus", 6 => "/Admin/ViewLang", 7 => "/Admin/ViewLangString", _ => "" };
+    static string ReturnLabelKey(int m) => m switch { 1 => "Support Reps", 2 => "Categories", 3 => "Departments", 4 => "Priorities", 5 => "Statuses", 6 => "Languages", 7 => "LanguageStrings", _ => "" };
+}
+@* Port of admin/confdelete.asp *@
+<div align="center">
+  <table class="Normal">
+    @if (Model.OkToDelete)
+    {
+      <tr class="Head1"><td>@Html.Lang("Areyousure")</td></tr>
+      <tr class="Body1">
+        <td>
+          <div align="center">
+            <a href="@BackRoute(Model.Mtype)">@Html.Lang("NO")</a>
+            <p><a href="/Admin/Delete?mtype=@Model.Mtype&id=@Model.Id">@Html.Lang("YES")</a></p>
+          </div>
+        </td>
+      </tr>
+    }
+    else
+    {
+      <tr class="Head1"><td>@Html.Lang("UnableToDelete")</td></tr>
+      @if (Model.BlockingProblems.Count > 0)
+      {
+        <tr class="Body1">
+          <td>
+            @Html.Lang("probResText")
+            <p></p>
+            <div align="center">
+              @foreach (var pid in Model.BlockingProblems) { <a href="/Rep/Problem/View?id=@pid">@pid</a><br /> }
+            </div>
+          </td>
+        </tr>
+      }
+    }
+  </table>
+  <p><a href="/Admin">@Html.Lang("AdministrativeMenu")</a></p>
+  @if (Model.Mtype >= 1 && Model.Mtype <= 7)
+  {
+    @* confdelete.asp:191-206 per-mtype back-link. The original is <%=lang("Manage")%> <%=lang(X)%>; Classic ASP
+       consumes the whitespace-only literal between adjacent output tags, so the live page renders them joined
+       ("ManageCategories"). Concatenate with NO space to match. *@
+    <a href="@ReturnRoute(Model.Mtype)">@Html.Lang("Manage")@Html.Lang(ReturnLabelKey(Model.Mtype))</a>
+  }
+</div>
+@Html.Raw(Chrome.Footer())

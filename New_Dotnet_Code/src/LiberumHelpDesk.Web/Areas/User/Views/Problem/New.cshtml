@@ -1,0 +1,102 @@
+@model ProblemNewVm
+@* Port of user/new.asp *@
+<form action="/User/Problem/PostNew" method="POST">
+  <input type="hidden" name="uid" value="@Model.Uid" />
+  <div align="center">
+    <table class="Wide">
+      <tr><td colspan="2"><div align="right"><em>*</em> - @Html.Lang("Required")</div></td></tr>
+      <tr class="Head1"><td colspan="2">@Html.Lang("SubmitANewProblem")</td></tr>
+      <tr class="Body1">
+        <td valign="top">
+          <div align="center">
+            <table class="narrow" border="0">
+              <tr><td align="center" colspan="2"><b>@Html.Lang("ContactInformation")</b></td></tr>
+              <tr><td><b>@Html.Lang("UserName"):</b></td><td>@Model.Uid</td></tr>
+              <tr><td><b>@Html.Lang("EMail"):</b></td><td><input type="text" name="uemail" size="20" value="@Model.Uemail" /><em>*</em></td></tr>
+              <tr><td><b>@Html.Lang("Location"):</b></td><td><input type="text" name="ulocation" size="20" value="@Model.Ulocation" /></td></tr>
+              <tr><td><b>@Html.Lang("Phone"):</b></td><td><input type="text" name="uphone" size="20" value="@Model.Uphone" /></td></tr>
+            </table>
+          </div>
+        </td>
+        <td valign="top">
+          <div align="center">
+            <table class="narrow" border="0">
+              <tr><td colspan="2"><div align="center"><b>@Html.Lang("ProblemClassification")</b></div></td></tr>
+              <tr>
+                <td><b>@Html.Lang("Department"):</b></td>
+                <td>
+                  <select name="department">
+                    <option value="0">Select Department</option>
+                    @foreach (var d in Model.Departments)
+                    {
+                      if (d.Id == Model.UserDepartment)
+                      {
+                        <option value="@d.Id" selected>@d.Name</option>
+                      }
+                      else
+                      {
+                        <option value="@d.Id">@d.Name</option>
+                      }
+                    }
+                  </select><em>*</em>
+                </td>
+              </tr>
+              <tr>
+                <td><b>@Html.Lang("Category"):</b></td>
+                <td>
+                  <select name="category">
+                    <option value="0" selected>@Html.Lang("SelectCategory")</option>
+                    @foreach (var c in Model.Categories)
+                    {
+                      <option value="@c.Id">@c.Name</option>
+                    }
+                  </select><em>*</em>
+                </td>
+              </tr>
+              <tr>
+                <td><b>@Html.Lang("Priority"):</b></td>
+                <td>
+                  <select name="priority">
+                    @foreach (var pr in Model.Priorities)
+                    {
+                      if (pr.Id == Model.DefaultPriority)
+                      {
+                        <option value="@pr.Id" selected>@pr.Name</option>
+                      }
+                      else
+                      {
+                        <option value="@pr.Id">@pr.Name</option>
+                      }
+                    }
+                  </select><em>*</em>
+                </td>
+              </tr>
+              <tr>
+                <td><b>@Html.Lang("DueDate"):</b></td>
+                <td><input type="text" name="duedate" size="10" maxlength="12" value="@Model.DueDate" /><em>*</em>&nbsp;<font size="-2">(@Model.DateFormat)</font></td>
+              </tr>
+            </table>
+          </div>
+        </td>
+      </tr>
+      <tr class="Head2"><td colspan="2">@Html.Lang("ProblemInformation"):</td></tr>
+      <tr class="Body1">
+        <td colspan="2">
+          <b>@Html.Lang("Title"):</b> <em>*</em><br />
+          <input type="text" name="title" size="50" />
+          <p></p>
+          <b>@Html.Lang("Description"):</b> <em>*</em><br />
+          <textarea rows="12" cols="80" name="description"></textarea>
+        </td>
+      </tr>
+      <tr class="Head2">
+        <td colspan="2">
+          <div align="center">
+            <input type="submit" value="@Loc.Lang("SubmitProblem")" name="B1" />&nbsp;<input type="reset" value="@Loc.Lang("ClearForm")" name="B2" />
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div>
+</form>
+@Html.Raw(Chrome.Footer())

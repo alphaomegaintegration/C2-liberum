@@ -1,0 +1,92 @@
+@* Port of admin/config_help.asp — popup describing each configuration setting. *@
+<div align="center">
+  <table class="Normal">
+    <tr class="Head1">
+      <td colspan="2">@Html.Lang("ConfigurationHelp")</td>
+    </tr>
+    <tr class="Body1" valign="top">
+      <td><b>@Html.Lang("SiteName")</b></td>
+      <td>@Html.Lang("SiteNameHelp")</td>
+    </tr>
+    <tr class="Body2" valign="top">
+      <td><b>@Html.Lang("BaseURL")</b></td>
+      <td>@Html.Lang("BaseURLHelp_2")</td>
+    </tr>
+    <tr class="Body1" valign="top">
+      <td><b>@Html.Lang("AdministratorsName")</b></td>
+      <td>@Html.Lang("AdministratorsNameHelp")</td>
+    </tr>
+    <tr class="Body2" valign="top">
+      <td><b>@Html.Lang("AdministratorsEmail")</b></td>
+      <td>@Html.Lang("AdministratorsEmailHelp")</td>
+    </tr>
+    <tr class="Body1" valign="top">
+      <td><b>@Html.Lang("BaseEmail")</b></td>
+      <td>@Html.Lang("BaseEmailHelp")</td>
+    </tr>
+    <tr class="Body2" valign="top">
+      <td><b>@Html.Lang("EmailType")</b></td>
+      <td>@Html.Lang("EmailTypeHelp")</td>
+    </tr>
+    <tr class="Body1" valign="top">
+      <td><b>@Html.Lang("SMTPServer")</b></td>
+      <td>@Html.Lang("SMTPServerHelp")</td>
+    </tr>
+    <tr class="Body2" valign="top">
+      <td><b>@Html.Lang("PagerPriorityLevel")</b></td>
+      <td>@Html.Lang("PagerPriorityLevelHelp")</td>
+    </tr>
+    <tr class="Body1" valign="top">
+      <td><b>@Html.Lang("EmailUseronUpdate")</b></td>
+      <td>@Html.Lang("EmailUseronUpdateHelp")</td>
+    </tr>
+    <tr class="Body2" valign="top">
+      <td><b>@Html.Lang("EnableUserKB")</b></td>
+      <td>@Html.Lang("EnableUserKBHelp")</td>
+    </tr>
+    <tr class="Body1" valign="top">
+      <td><b>@Html.Lang("KBSQLFreeTextSearches")</b></td>
+      <td>@Html.Lang("KBSQLFreeTextSearchesHelp")</td>
+    </tr>
+    <tr class="Body2" valign="top">
+      <td><b>@Html.Lang("DefaultPriority")</b></td>
+      <td>@Html.Lang("DefaultPriorityHelp")</td>
+    </tr>
+    <tr class="Body1" valign="top">
+      <td><b>@Html.Lang("DefaultStatus")</b></td>
+      <td>@Html.Lang("DefaultStatusHelp")</td>
+    </tr>
+    <tr class="Body2" valign="top">
+      <td><b>@Html.Lang("CloseStatus")</b></td>
+      <td>@Html.Lang("CloseStatusHelp")</td>
+    </tr>
+    <tr class="Body1" valign="top">
+      <td><b>@Html.Lang("AuthenticationType")</b></td>
+      <td>@Html.Lang("AuthenticationTypeHelp")</td>
+    </tr>
+    <tr class="Body2" valign="top">
+      <td><b>@Html.Lang("UseSelectUser")</b></td>
+      <td>@Html.Lang("UseSelectUserHelp")</td>
+    </tr>
+    <tr class="Body1" valign="top">
+      <td><b>@Html.Lang("UseInOutBoard")</b></td>
+      <td>@Html.Lang("UseInOutBoardHelp")</td>
+    </tr>
+    <tr class="Body2" valign="top">
+      <td><b>@Html.Lang("AllowImageUpload")</b></td>
+      <td>@Html.Lang("AllowImageUploadHelp")</td>
+    </tr>
+    <tr class="Body1" valign="top">
+      <td><b>@Html.Lang("MaxImageSize")</b></td>
+      <td>@Html.Lang("MaxImageSizeHelp")</td>
+    </tr>
+    <tr class="Body2" valign="top">
+      <td><b>@Html.Lang("Defaultlanguage")</b></td>
+      <td>@Html.Lang("DefaultlanguageHelp")</td>
+    </tr>
+  </table>
+  <form>
+    <input type="button" value="@Loc.Lang("CloseThisWindow")" onclick="javascript:window.close();" />
+  </form>
+</div>
+@Html.Raw(Chrome.Footer())
