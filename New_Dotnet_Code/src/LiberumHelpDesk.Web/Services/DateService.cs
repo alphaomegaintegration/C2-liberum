@@ -17,15 +17,15 @@ public interface IDateService
 
 public sealed class DateService : IDateService
 {
-        private static string NormalizeUnicodeSpaces(string value)
-        {
-            // ICU/globalization can emit non-breaking space variants in time strings.
-            // Convert them to plain ASCII spaces for deterministic parity output.
-            return value
-                .Replace('\u00A0', ' ')
-                .Replace('\u202F', ' ')
-                .Replace('\u2007', ' ');
-        }
+    private static string NormalizeUnicodeSpaces(string value)
+    {
+        // ICU/globalization can emit non-breaking space variants in time strings.
+        // Convert them to plain ASCII spaces for deterministic parity output.
+        return value
+            .Replace('\u00A0', ' ')
+            .Replace('\u202F', ' ')
+            .Replace('\u2007', ' ');
+    }
 
     private readonly ISessionContext _session;
     private readonly IUserService _users;
