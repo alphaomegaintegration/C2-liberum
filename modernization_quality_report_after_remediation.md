@@ -1,8 +1,8 @@
 # Conversion Quality Report: Old Classic ASP to New .NET
 
-Status: Remediation plan executed end-to-end on 2026-08-18.
+> NOTE: This file is an archived snapshot kept for historical reference. The canonical, up-to-date report is modernization_quality_report.md.
 
-Overall score: 9.6/10
+Status: Remediation plan executed end-to-end on 2026-08-18.
 
 ## Scope boundary
 - Modernization acceptance gates on the xUnit modernization suite in [New_Dotnet_Code/tests/LiberumHelpDesk.Tests/LiberumHelpDesk.Tests.csproj](New_Dotnet_Code/tests/LiberumHelpDesk.Tests/LiberumHelpDesk.Tests.csproj).
