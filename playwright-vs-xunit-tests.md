@@ -36,8 +36,7 @@ Recommended mapping:
 2. Port one rep or admin flow from [New_Dotnet_Code/tests/LiberumHelpDesk.Tests/RepFlowTests.cs](New_Dotnet_Code/tests/LiberumHelpDesk.Tests/RepFlowTests.cs) or [New_Dotnet_Code/tests/LiberumHelpDesk.Tests/AdminTests.cs](New_Dotnet_Code/tests/LiberumHelpDesk.Tests/AdminTests.cs).
 3. Extract shared Playwright helpers into the Playwright project instead of trying to reference the xUnit fixture directly.
 
-One small issue in the current Playwright file: only one test is actually discovered because the second method in [Liberum.PlaywrightTests/Tests/LiberumSmokeTests.cs](Liberum.PlaywrightTests/Tests/LiberumSmokeTests.cs) is missing a `[Test]` attribute.
-
+One note on the current Playwright file: it now contains multiple `[Test]` methods (including the previously missing attribute), so the suite should be fully discovered when executed.
 If you want, I can implement the reuse path properly by:
 1. creating shared Playwright helpers,
 2. porting one existing xUnit flow into Playwright,
