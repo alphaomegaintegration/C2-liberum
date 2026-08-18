@@ -82,7 +82,7 @@ Objective: keep the new Playwright effort useful but independent.
 
 Actions:
 1. Either mark non-gating in docs, or maintain as separate CI job.
-2. If desired, add missing test attribute for second method in [Liberum.PlaywrightTests/Tests/LiberumSmokeTests.cs](Liberum.PlaywrightTests/Tests/LiberumSmokeTests.cs#L47) so both checks execute.
+2. Confirm Playwright smoke tests are all discovered and executing (e.g., ensure each test method has a `[Test]` attribute).
 3. Keep a separate UI smoke badge or status from modernization parity gate.
 
 Exit criteria:
