@@ -42,6 +42,17 @@ public sealed class DatabaseSeeder : IDatabaseSeeder
         ("Spanish",   "Español",    "Spanish_Español.txt"),
     };
 
+    // Legacy SQL seed does not include category rows; create a practical starter list when empty.
+    // IDs are intentionally high to avoid interfering with legacy-id assumptions in tests/fixtures.
+    private static readonly (int Id, string Name)[] DefaultCategories =
+    {
+        (1001, "General"),
+        (1002, "Hardware"),
+        (1003, "Software"),
+        (1004, "Network"),
+        (1005, "Account Access"),
+    };
+
     private readonly Db _db;
     private readonly IKeyService _keys;
     private readonly SeederPaths _paths;
@@ -62,11 +73,34 @@ public sealed class DatabaseSeeder : IDatabaseSeeder
 
         // 2. Base seed + language import only when the DB is empty.
         var seeded = _db.Connection.ExecuteScalar<long>("SELECT COUNT(*) FROM tblConfig") > 0;
-        if (seeded) return;
+        if (!seeded)
+        {
+            ExecuteScript(File.ReadAllText(_paths.SeedSqlPath));
+            ImportAllLanguages();
+            if (_paths.SeedAdminUser) SeedSampleUsers();
+        }
 
-        ExecuteScript(File.ReadAllText(_paths.SeedSqlPath));
-        ImportAllLanguages();
-        if (_paths.SeedAdminUser) SeedSampleUsers();
+        // Keep new and existing installs usable: if categories are missing, add a starter list.
+        EnsureDefaultCategories();
+    }
+
+    private void EnsureDefaultCategories()
+    {
+        var categoryCount = _db.Connection.ExecuteScalar<long>(
+            "SELECT COUNT(*) FROM categories WHERE category_id > 0");
+        if (categoryCount > 0) return;
+
+        var repId = _db.Connection.ExecuteScalar<int?>(
+            "SELECT sid FROM tblUsers WHERE IsRep = 1 ORDER BY sid ASC LIMIT 1") ?? 0;
+
+        using var tx = _db.Connection.BeginTransaction();
+        foreach (var (id, name) in DefaultCategories)
+        {
+            _db.Connection.Execute(
+                "INSERT OR IGNORE INTO categories (category_id, cname, rep_id) VALUES (@id, @name, @rep)",
+                new { id, name, rep = repId }, tx);
+        }
+        tx.Commit();
     }
 
     private void ExecuteScript(string sql)
