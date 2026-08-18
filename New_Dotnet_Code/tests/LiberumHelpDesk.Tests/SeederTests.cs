@@ -17,10 +17,21 @@ public class SeederTests
         Assert.Equal(2, c.ExecuteScalar<long>("SELECT COUNT(*) FROM departments"));
         Assert.Equal(6, c.ExecuteScalar<long>("SELECT COUNT(*) FROM tblConfig_Email"));
         Assert.Equal(3, c.ExecuteScalar<long>("SELECT COUNT(*) FROM tblConfig_Auth"));
+        Assert.True(c.ExecuteScalar<long>("SELECT COUNT(*) FROM categories WHERE category_id > 0") >= 1);
 
         // The unknown user (sid=0) is the only stock account.
         Assert.Equal("unknown", c.ExecuteScalar<string>("SELECT uid FROM tblUsers WHERE sid = 0"));
         Assert.Equal(1, c.ExecuteScalar<long>("SELECT COUNT(*) FROM tblUsers"));
+    }
+
+    [Fact]
+    public void Categories_get_a_starter_list_when_empty()
+    {
+        using var fx = new HelpdeskFixture();
+        var c = fx.Db.Connection;
+
+        Assert.Equal(5, c.ExecuteScalar<long>("SELECT COUNT(*) FROM categories WHERE category_id >= 1001 AND category_id <= 1005"));
+        Assert.Equal("General", c.ExecuteScalar<string>("SELECT cname FROM categories WHERE category_id = 1001"));
     }
 
     [Fact]

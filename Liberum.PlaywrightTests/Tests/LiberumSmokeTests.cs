@@ -7,10 +7,20 @@ namespace Liberum.PlaywrightTests.Tests;
 [TestFixture]
 public class LiberumSmokeTests : PageTest
 {
+    private const string BaseUrl = "http://localhost:5100";
+
+    private async Task LoginAsAdmin()
+    {
+        await Page.GotoAsync(BaseUrl);
+        await Page.Locator("input[name='uid']").FillAsync("admin");
+        await Page.Locator("input[name='password']").FillAsync("admin");
+        await Page.GetByRole(AriaRole.Button, new() { Name = "Logon" }).ClickAsync();
+    }
+
     [Test]
     public async Task LoginPageLoads()
     {
-        await Page.GotoAsync("http://localhost:5100");
+        await Page.GotoAsync(BaseUrl);
 
         // Verify we were redirected to the login page
         await Expect(Page).ToHaveURLAsync(
@@ -44,9 +54,11 @@ public class LiberumSmokeTests : PageTest
             )
         ).ToBeVisibleAsync();
     }
+
+    [Test]
     public async Task CanEnterLoginCredentials()
     {
-        await Page.GotoAsync("http://localhost:5100");
+        await Page.GotoAsync(BaseUrl);
 
         await Page.Locator("input[name='uid']")
             .FillAsync("testuser");
@@ -59,5 +71,31 @@ public class LiberumSmokeTests : PageTest
 
         await Expect(Page.Locator("input[name='password']"))
             .ToHaveValueAsync("testpassword");
+    }
+
+    [Test]
+    public async Task UserCanSubmitANewProblemAndSeeItInProblemList()
+    {
+        var problemTitle = $"Playwright Problem {DateTimeOffset.UtcNow.ToUnixTimeSeconds()}";
+
+        await LoginAsAdmin();
+
+        await Page.GotoAsync($"{BaseUrl}/User/Problem/New");
+        await Expect(Page).ToHaveURLAsync(new System.Text.RegularExpressions.Regex(".*/User/Problem/New$"));
+
+        await Page.Locator("select[name='department']").SelectOptionAsync(new[] { new SelectOptionValue { Label = "Dept1" } });
+        await Page.Locator("select[name='category']").SelectOptionAsync(new[] { new SelectOptionValue { Label = "General" } });
+        await Page.Locator("select[name='priority']").SelectOptionAsync(new[] { new SelectOptionValue { Label = "HIGH" } });
+        await Page.Locator("input[name='duedate']").FillAsync("2027-01-01");
+        await Page.Locator("input[name='title']").FillAsync(problemTitle);
+        await Page.Locator("textarea[name='description']").FillAsync("Created by Playwright target test.");
+
+        await Page.GetByRole(AriaRole.Button, new() { Name = "Submit Problem" }).ClickAsync();
+
+        await Expect(Page.Locator("body")).ToContainTextAsync("Submitted");
+        await Expect(Page.Locator("body")).ToContainTextAsync(problemTitle);
+
+        await Page.GotoAsync($"{BaseUrl}/User/Problem/View");
+        await Expect(Page.Locator("body")).ToContainTextAsync(problemTitle);
     }
 }

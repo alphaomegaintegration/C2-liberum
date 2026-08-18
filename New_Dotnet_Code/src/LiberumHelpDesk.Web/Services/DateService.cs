@@ -17,6 +17,16 @@ public interface IDateService
 
 public sealed class DateService : IDateService
 {
+    private static string NormalizeUnicodeSpaces(string value)
+    {
+        // ICU/globalization can emit non-breaking space variants in time strings.
+        // Convert them to plain ASCII spaces for deterministic parity output.
+        return value
+            .Replace('\u00A0', ' ')
+            .Replace('\u202F', ' ')
+            .Replace('\u2007', ' ');
+    }
+
     private readonly ISessionContext _session;
     private readonly IUserService _users;
 
@@ -70,7 +80,8 @@ public sealed class DateService : IDateService
         if (withTime)
         {
             var culture = CultureInfo.CurrentCulture; // locked to en-US in Program.cs for parity
-            fmt = fmt + " " + dt.ToString(culture.DateTimeFormat.LongTimePattern, culture);
+            var longTime = dt.ToString(culture.DateTimeFormat.LongTimePattern, culture);
+            fmt = fmt + " " + NormalizeUnicodeSpaces(longTime);
         }
         return fmt;
     }

@@ -1,8 +1,12 @@
 # LiberumASP → .NET 10 — "100% replica" verification checklist
 
+Scope note: this checklist is for modernization acceptance only. The separate Playwright project under
+`Liberum.PlaywrightTests/` is a recent, independent workstream and is not a modernization gate.
+
 ## Build & tests
 - [x] `dotnet build` clean (0 warnings, 0 errors)
 - [x] `dotnet test tests/LiberumHelpDesk.Tests` all green — **82 passing** (unit + integration)
+- [x] `dotnet list` vulnerable scan clean for both Web and modernization tests (no vulnerable packages)
 - [x] App boots on Kestrel (no Docker), seeds the SQLite DB + 7 languages on first run, serves `/css/default.css`
       + `/image/*_pin.gif`; DB-auth login (admin/admin) returns 302; `/Admin/ViewLang` lists all 7 languages
 
